@@ -1,4 +1,3 @@
-<pre>
 
 #### Wifi with 3 buttons
 
@@ -21,6 +20,7 @@ At that specific time will run the automatic irrigation, for a duration spcified
 *******************************************************
 #### myEsp
 *******************************************************
+<pre>
 
 /*******************************************************
 By default at first time upload the C_AP_MODE_BTN is set to GPIO16 (pull to Vcc go in AP mode).
