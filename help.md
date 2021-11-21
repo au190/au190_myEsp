@@ -1,5 +1,6 @@
-
+*******************************************************
 #### Wifi with 3 buttons
+*******************************************************
 
 1.  If all the 3 button is pressed go in normal mode(N) (sending status mqtt msg) - not going in sleep mode.
 2.  In N mode I can do the OTA update.
@@ -10,17 +11,15 @@
 
 
 ```
-Switching ON|OFF you can Enable|Disable automatic irrigation.
-You can Enable|Disable weekdays for irrigation.
-You can setup the time for automatic irrigation.
-At that specific time will run the automatic irrigation, for a duration spcified in the Irrigation system.
+
+
 ```
 
-#### myEsp
 *******************************************************
 #### myEsp
 *******************************************************
 <pre>
+
 
 /*******************************************************
 By default at first time upload the C_AP_MODE_BTN is set to GPIO16 (pull to Vcc go in AP mode).
