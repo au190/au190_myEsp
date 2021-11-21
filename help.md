@@ -1,3 +1,22 @@
+
+*******************************************************
+#### Wifi Md or button
+*******************************************************
+
+1.  If GPIO14 is LOW (less then < 5 sec) at startup - it will run in normal mode(N) (sending status mqtt msg) - not going in sleep mode.
+2.  In N mode I can do the OTA update.
+3.  Exit from this mode press GPIO14 for 5 sec go to sleep.
+4.  If GPIO14 is LOW (more then > 5 sec) at startup - it will run in AP mode - not going in sleep mode.
+5.  Exit from this mode press GPIO14 for 5 sec go to sleep.
+6.  From N mode and AP mode after 2 min go to sleep.
+
+Blink:
+1.  100 msec    Connecting to Wifi
+2.  1 sec       AP mode
+3.  2 sec       No MQTT
+4.  3 sec       Normal mode
+
+
 *******************************************************
 #### Wifi with 3 buttons
 *******************************************************
@@ -9,11 +28,6 @@
 5.  Exit from this mode press 1 and 3 button and go to sleep.
 6.  From N mode and AP mode after 2 min go to sleep.
 
-
-```
-
-
-```
 
 *******************************************************
 #### myEsp
