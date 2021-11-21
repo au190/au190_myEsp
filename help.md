@@ -1,3 +1,4 @@
+<pre>
 
 /*******************************************************
 By default at first time upload the C_AP_MODE_BTN is set to GPIO15 (pull to Vcc go in AP mode).
@@ -188,3 +189,5 @@ cmnd/ws/Dimmer1 50
 
 
 *******************************************************/
+
+</pre>
