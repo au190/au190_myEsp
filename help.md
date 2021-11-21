@@ -1,7 +1,7 @@
 <pre>
 
 /*******************************************************
-By default at first time upload the C_AP_MODE_BTN is set to GPIO15 (pull to Vcc go in AP mode).
+By default at first time upload the C_AP_MODE_BTN is set to GPIO16 (pull to Vcc go in AP mode).
 
 Event Commands - the key is the first element in the json object
 
@@ -13,12 +13,13 @@ tele
 ----------- Module configurations -----------
 *******************************************************
 Multisensor:
-{"o_0":255,"o_1":255,"o_2":255,"o_3":0,"o_4":255,"o_5":6,"o_12":8,"o_13":9,"o_14":15,"o_15":10,"o_16":2,"o_17":255}
+{"o_0":255,"o_1":255,"o_2":14,"o_3":0,"o_4":255,"o_5":6,"o_12":8,"o_13":9,"o_14":15,"o_15":10,"o_16":255,"o_17":81}
 
 Irrigation:
 {"o_0":12,"o_1":255,"o_2":14,"o_3":0,"o_4":4,"o_5":4,"o_12":4,"o_13":5,"o_14":4,"o_15":4,"o_16":10,"o_17":255}
 
-
+MyPlug:
+{"o_0":255,"o_1":255,"o_2":255,"o_3":0,"o_4":4,"o_5":154,"o_12":8,"o_13":9,"o_14":255,"o_15":255,"o_16":10,"o_17":255}
 
 
 
@@ -48,10 +49,6 @@ cmnd/ws/reboot
 
 -----------   Get filesystem of ESP   -----------
 cmnd/ws/in {"fsys":""}
-
-
------------   Get sensors   -----------
-cmnd/ws/sensor
 
 
 -----------   Get I2Cscan   -----------
@@ -116,8 +113,9 @@ All index represents the real GPIO pin number (POWER0 -> POWER16)
 
 -----------   Power   -----------
 
-- Power can be 0, 1 , ON, OFF
+- Power can be 0, 1 ,ON, OFF, toggle
 - msg can be (POWER0 -> POWER16)
+- toggle = if power state is ON switch to OFF and vice versa
 ----------------------------
 Get the Power status
 cmnd/ws/POWER7
