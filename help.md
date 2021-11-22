@@ -19,7 +19,7 @@ Blink:
 #### Wifi with 3 buttons - 3Button
 *******************************************************
 
-1.  If all the 3 button is pressed (less then < 5 sec) at startup go in N  mode - not going in sleep mode.
+1.  If GPIO16 is HIGH (less then < 5 sec) at startup it will go in N  mode - not going in sleep mode.
 2.  In N mode if GPIO16 is HIGH it will go in AP mode - not going in sleep mode.
 3.  From N mode or AP mode after 2 min go to sleep.
 
