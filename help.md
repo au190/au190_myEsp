@@ -16,7 +16,7 @@ Blink:
 
 
 *******************************************************
-#### Wifi with 3 buttons - 3Button
+#### Wifi 3Button
 *******************************************************
 
 1.  If GPIO16 is HIGH (less then < 5 sec) at startup it will go in N  mode - not going in sleep mode.
@@ -72,7 +72,7 @@ Irrigation:
 MyPlug:
 {"o_0":255,"o_1":255,"o_2":255,"o_3":0,"o_4":4,"o_5":154,"o_12":8,"o_13":9,"o_14":255,"o_15":255,"o_16":10,"o_17":255}
 
-Wifi Md or Wifi button:
+Wifi Md or Wifi button or Wifi 3Button:
 {"o_0":255,"o_1":255,"o_2":170,"o_3":0,"o_4":255,"o_5":255,"o_12":255,"o_13":255,"o_14":255,"o_15":255,"o_16":10,"o_17":255}
 
 
