@@ -1,14 +1,11 @@
 
 *******************************************************
-#### Wifi Md or button
+#### Wifi Md or Wifi button
 *******************************************************
 
-1.  If GPIO14 is LOW (less then < 5 sec) at startup - it will run in normal mode(N) (sending status mqtt msg) - not going in sleep mode.
-2.  In N mode I can do the OTA update.
-3.  Exit from this mode press GPIO14 for 5 sec go to sleep.
-4.  If GPIO14 is LOW (more then > 5 sec) at startup - it will run in AP mode - not going in sleep mode.
-5.  Exit from this mode press GPIO14 for 5 sec go to sleep.
-6.  From N mode and AP mode after 2 min go to sleep.
+1.  If GPIO16 is HIGH (less then < 5 sec) at startup - it will run in N  mode - not going in sleep mode.
+2.  If GPIO16 is HIGH (more then > 5 sec) at startup - it will run in AP mode - not going in sleep mode.
+3.  From N mode and AP mode after 2 min go to sleep.
 
 Blink:
 1.  100 msec    Connecting to Wifi
@@ -17,23 +14,38 @@ Blink:
 4.  3 sec       Normal mode
 
 
+
 *******************************************************
-#### Wifi with 3 buttons
+#### Wifi with 3 buttons - 3Button
 *******************************************************
 
-1.  If all the 3 button is pressed go in normal mode(N) (sending status mqtt msg) - not going in sleep mode.
-2.  In N mode I can do the OTA update.
-3.  Exit from this mode press 1 and 3 button and go to sleep.
-4.  If I press 4 times all the 3 buttons go in AP mode.
-5.  Exit from this mode press 1 and 3 button and go to sleep.
-6.  From N mode and AP mode after 2 min go to sleep.
+1.  If all the 3 button is pressed (less then < 5 sec) at startup go in normal mode(N) - not going in sleep mode.
+2.  If all the 3 button is pressed (less then > 5 sec) at startup go in AP mode.
+3.  From N mode and AP mode after 2 min go to sleep.
+
+Blink:
+1.  100 msec    Connecting to Wifi
+2.  1 sec       AP mode
+3.  2 sec       No MQTT
+4.  3 sec       Normal mode
+
 
 
 *******************************************************
 #### myEsp
 *******************************************************
-<pre>
 
+1.  By default at first time upload the C_AP_MODE_BTN is set to GPIO16 (pull to Vcc go in AP mode). Active after 5 seconds after start-up.
+2.  If no Wifi or MQTT connection restart after 5 min.
+
+Blink:
+1.  100 msec    Connecting to Wifi
+2.  1 sec       AP mode
+3.  2 sec       No MQTT
+
+
+
+<pre>
 
 /*******************************************************
 By default at first time upload the C_AP_MODE_BTN is set to GPIO16 (pull to Vcc go in AP mode).
@@ -56,7 +68,8 @@ Irrigation:
 MyPlug:
 {"o_0":255,"o_1":255,"o_2":255,"o_3":0,"o_4":4,"o_5":154,"o_12":8,"o_13":9,"o_14":255,"o_15":255,"o_16":10,"o_17":255}
 
-
+Wifi Md or Wifi button:
+{"o_0":255,"o_1":255,"o_2":170,"o_3":0,"o_4":255,"o_5":255,"o_12":255,"o_13":255,"o_14":255,"o_15":255,"o_16":10,"o_17":255}
 
 
 
