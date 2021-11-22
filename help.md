@@ -19,8 +19,8 @@ Blink:
 #### Wifi with 3 buttons - 3Button
 *******************************************************
 
-1.  If all the 3 button is pressed (less then < 5 sec) at startup go in normal mode(N) - not going in sleep mode.
-2.  If all the 3 button is pressed (less then > 5 sec) at startup go in AP mode.
+1.  If all the 3 button is pressed (less then < 5 sec) at startup go in N  mode - not going in sleep mode.
+2.  If all the 3 button is pressed (less then > 5 sec) at startup go in AP mode - not going in sleep mode.
 3.  From N mode and AP mode after 2 min go to sleep.
 
 Blink:
