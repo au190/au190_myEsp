@@ -13,6 +13,8 @@ Blink:
 3.  2 sec       No MQTT
 4.  3 sec       Normal mode
 
+Button = EN pin
+
 
 
 *******************************************************
