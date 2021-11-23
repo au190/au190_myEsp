@@ -39,8 +39,14 @@ GPIO14
 #### myEsp
 *******************************************************
 
-1.  By default at first time upload the C_AP_MODE_BTN is set to GPIO16 (pull to Vcc go in AP mode). Active after 5 seconds after start-up.
+1.  After the firmware upload:
+    a.  GPIO16 set to C_AP_MODE_BTN_I allways go in AP mode. Active after 5 seconds after start-up.
+    b.  GPIO2 (Led) set to status Led_0.
 2.  If no Wifi or MQTT connection restart after 5 min.
+
+
+
+
 
 Blink:
 1.  100 msec    Connecting to Wifi
@@ -52,7 +58,6 @@ Blink:
 <pre>
 
 /*******************************************************
-By default at first time upload the C_AP_MODE_BTN is set to GPIO16 (pull to Vcc go in AP mode).
 
 Event Commands - the key is the first element in the json object
 
