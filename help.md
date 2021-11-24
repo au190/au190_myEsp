@@ -62,6 +62,160 @@ Blink:
 <pre>
 
 /*******************************************************
+	
+SPIFFS is a FileSystem that allows to store files directly in Flash instead of having an external SDCard or other storage.
+- See more at: http://www.esp8266.com/viewtopic.php?f=32&t=4432#sthash.nxYrdf2N.dpuf
+	
+https://github.com/esp8266/Arduino/blob/master/doc/filesystem.md
+struct FSInfo {
+    size_t totalBytes;
+    size_t usedBytes;
+    size_t blockSize;
+    size_t pageSize;
+    size_t maxOpenFiles;
+    size_t maxPathLength;
+};
+This is the structure which may be filled using FS::info method.
+
+totalBytes — total size of useful data on the file system
+usedBytes — number of bytes used by files
+blockSize — SPIFFS block size
+pageSize — SPIFFS logical page size
+maxOpenFiles — max number of files which may be open simultaneously
+maxPathLength — max file name length (including one byte for zero termination)
+
+
+*******************************************************/
+/*
+bool getFS(){
+
+	FSInfo fs_info;
+	SPIFFS.info(fs_info);
+	//int Flashfree = fs_info.totalBytes - fs_info.usedBytes;
+
+	msg = String(ESP.getSdkVersion());//
+	LogWs("getSdkVersion: "+ msg);
+	
+	LogWs("getFS: Total:"+ String(fs_info.totalBytes) + " Used:" + fs_info.usedBytes);
+	
+	msg = String(WiFi.macAddress());//ESP8266-STA-MAC
+	LogWs("macAddress: "+ msg);
+	
+	msg = String(WiFi.softAPmacAddress());//ESP8266-AP-MAC
+	LogWs("softAPmacAddress: "+ msg);
+	
+	msg = String(ESP.getChipId());
+	LogWs("getChipId: "+ msg);
+	
+	msg = String(ESP.getFlashChipId());
+	LogWs("getFlashChipId: "+ msg);
+	
+	//---------------------------------
+	
+	msg = String(ESP.getSketchSize());//ESP8266-sketch-size
+	LogWs("getSketchSize: "+ msg);
+	msg = String(ESP.getFreeSketchSpace());//ESP8266-free-space
+	LogWs("getFreeSketchSpace: "+ msg);
+	
+	msg = String(ESP.getFlashChipRealSize());//ESP8266-chip-size
+	LogWs("getFlashChipRealSize: "+ msg);
+	msg = String(ESP.getFlashChipSize());
+	LogWs("getFlashChipSize: "+ msg);
+	msg = String(ESP.getFlashChipMode());
+	LogWs("getFlashChipMode: "+ msg);
+	
+	msg = String(ESP.getFlashChipSpeed());
+	LogWs("getFlashChipSpeed: "+ msg);
+	
+	//---------------------------------
+	
+	uint32_t ideSize 		= ESP.getFlashChipSize();
+	uint32_t realSize 	= ESP.getFlashChipRealSize();
+	FlashMode_t ideMode = ESP.getFlashChipMode();
+
+
+	//LogWs("Flash ide mode: " + (ideMode == FM_QIO ? "QIO" : ideMode == FM_QOUT ? "QOUT" : ideMode == FM_DIO ? "DIO" : ideMode == FM_DOUT ? "DOUT" : "UNKNOWN") );
+	
+
+	if(ideSize != realSize){
+		LogWs("Flash Chip configuration wrong!");
+	}else {
+		LogWs("Flash Chip configuration ok");
+	}
+
+}
+*/
+/*******************************************************
+  
+cmnd
+stat
+tele
+
+*******************************************************/
+void MQTT_reconnect(){
+
+  LogWs("Start MQTT");
+  
+  String topic  = "tele/" + String(mqtt_topic) + "/LWT";
+  msg           = "Offline";
+  
+  if(MqttClient.connect(mqtt_topic, mqtt_user, mqtt_pw, (char*) topic.c_str(), 1, true, (char*) msg.c_str())) {
+
+    msg   = "Online";
+    publishMQTT(topic, msg, true);
+
+    setStatusLed(254, 0, 0);//LED_I, cyl, ledOn
+ 
+    
+    /*******************************************************
+
+      ... and resubscribe
+      
+    *******************************************************/
+    
+    topic = "cmnd/" + String(mqtt_topic) + "/#";
+    MqttClient.subscribe((char*) topic.c_str());
+    
+  
+  }else{
+    
+    LogWs("Mqtt fail: " + String(MqttClient.state()) );
+    
+  }
+}
+/*******************************************************
+
+	
+
+*******************************************************/
+boolean publishMQTT(String topic, String msg, bool retain){
+  
+  /*
+  if(msg.length() > MQTT_MAX_PACKET_SIZE){
+    msg   = "{\"err\":\"MQTT msg too long " + String(msg.length()) + " - " + String(MQTT_MAX_PACKET_SIZE) + "\"}";
+    MqttClient.publish((char*) topic.c_str(), (char*) msg.c_str(), retain);
+  }else{
+    MqttClient.publish((char*) topic.c_str(), (char*) msg.c_str(), retain);
+  }
+  */
+  
+  MqttClient.publish((char*) topic.c_str(), (char*) msg.c_str(), retain);
+  
+  //Send msg on the websocket
+  if(msg.charAt(0) == '{'){
+    
+    msg.remove(0, 1);
+    msg = "{\"topic\":\"" + topic + "\"," + msg;
+
+  }else{
+    
+    msg = "{\"topic\":\"" + topic + "\",\"msg\":\"" + msg + "\"}";
+    
+  }
+  LogWs(msg);
+  
+}
+/*******************************************************
 
 Event Commands - the key is the first element in the json object
 
@@ -73,7 +227,7 @@ tele
 ----------- Module configurations -----------
 *******************************************************
 Multisensor:
-{"o_0":255,"o_1":255,"o_2":155,"o_3":0,"o_4":255,"o_5":6,"o_12":8,"o_13":9,"o_14":15,"o_15":255,"o_16":10,"o_17":81}
+{"o_0":255,"o_1":255,"o_2":14,"o_3":0,"o_4":255,"o_5":6,"o_12":8,"o_13":9,"o_14":15,"o_15":10,"o_16":255,"o_17":81}
 
 Irrigation:
 {"o_0":12,"o_1":255,"o_2":14,"o_3":0,"o_4":4,"o_5":4,"o_12":4,"o_13":5,"o_14":4,"o_15":4,"o_16":10,"o_17":255}
@@ -81,8 +235,7 @@ Irrigation:
 MyPlug:
 {"o_0":255,"o_1":255,"o_2":255,"o_3":0,"o_4":4,"o_5":154,"o_12":8,"o_13":9,"o_14":255,"o_15":255,"o_16":10,"o_17":255}
 
-Wifi Md or Wifi button or Wifi 3Button:
-{"o_0":255,"o_1":255,"o_2":170,"o_3":0,"o_4":255,"o_5":255,"o_12":255,"o_13":255,"o_14":255,"o_15":255,"o_16":10,"o_17":255}
+
 
 
 
@@ -114,6 +267,40 @@ cmnd/ws/in {"fsys":""}
 
 -----------   Get I2Cscan   -----------
 cmnd/ws/I2Cscan
+
+
+
+
+----------- Just for EN_WS2812B - Set Color  -----------
+cmnd/ws/color 255,0,0
+cmnd/ws/color 255,255,255
+response --> {"topic":"stat/ws/RESULT","color":"ff0000","bri":100}
+Input is: RBG color
+
+
+----------- Just for EN_WS2812B - Set Brightness  -----------
+1 - 100
+cmnd/ws/bri 50
+response --> {"topic":"stat/ws/RESULT","color":"000080","bri":50}
+
+
+----------- Just for EN_WS2812B - Set speed  -----------
+cmnd/ws/speed 50
+
+1 - 255
+default: 50
+
+
+----------- Just for EN_WS2812B - Set effect -----------
+cmnd/ws/effect Rainbow
+
+Input is the effect name.
+
+
+----------- Just for EN_WS2812B - Set maxpower  -----------
+1 -255 -> 100mA - 25 500 mA
+Power set to ledstreep = maxpower * 100 = 100 - 25500 milliamps
+cmnd/ws/maxpower 10
 
 
 
@@ -248,5 +435,4 @@ cmnd/ws/Dimmer1 50
 
 
 *******************************************************/
-
 </pre>
