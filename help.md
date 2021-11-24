@@ -42,8 +42,8 @@ GPIO14
 *******************************************************
 
 1.  After the firmware upload:
-    a.  GPIO16 set to C_AP_MODE_BTN_I allways go in AP mode. Active after 5 seconds after start-up.
-    b.  GPIO2 (Led) set to status Led_0.
+    1.  GPIO16 set to C_AP_MODE_BTN_I allways go in AP mode. Active after 5 seconds after start-up.
+    2.  GPIO2 (Led) set to status Led_0.
 2.  After the Wifi config is done the GPIO16 must be set to not C_AP_MODE_BTN_I.
 3.  If no Wifi or MQTT connection restart after 5 min.
 
