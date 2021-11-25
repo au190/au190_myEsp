@@ -38,6 +38,18 @@ GPIO14
 
 
 *******************************************************
+#### WS2812B
+*******************************************************
+
+1.  After the firmware upload:
+    1.  GPIO16 set to C_AP_MODE_BTN_I allways go in AP mode.
+    2.  GPIO2 (Led) set to status Led_i_0.
+2.  After the Wifi config is done the GPIO16 must be set to not C_AP_MODE_BTN_I.
+3.  If no Wifi or MQTT connection restart after 5 min.
+4.  GPIO4 is the output for WS2812B - do not use this pin for other config !!!
+
+
+*******************************************************
 #### myEsp
 *******************************************************
 
