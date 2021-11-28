@@ -62,13 +62,26 @@ GPIO14
 
 
 
-
-
-
 Blink:
 1.  100 msec    Connecting to Wifi
 2.  1 sec       AP mode
 3.  2 sec       No MQTT
+
+
+# Configration info
+
+- Led_x - set the output as a status info
+- Led_x - set the output as a status info
+
+## Configration info
+
+- Led_x - set the output as a status info
+- Led_x - set the output as a status info
+
+### Configration info
+
+- Led_x - set the output as a status info
+- Led_x - set the output as a status info
 
 
 
