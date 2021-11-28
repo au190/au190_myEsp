@@ -73,11 +73,6 @@ Blink:
     - If pressed the device go in AP mode. Ip: 192.168.4.1
 
 
-* Configuration info
-  * Led_x
-  * AP Button 
-      - If pressed the device go in AP mode. Ip: 192.168.4.1
-
 <pre>
 
 /*******************************************************
