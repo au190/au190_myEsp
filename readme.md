@@ -1,4 +1,6 @@
+*******************************************************
 ### Wifi Md or Wifi button
+
 
 1.  If GPIO16 is HIGH (less then < 5 sec) at startup it will go in N  mode - not going in sleep mode.
 2.  In N mode if GPIO16 is HIGH it will go in AP mode - not going in sleep mode.
@@ -14,7 +16,7 @@ Button = EN pin
 
 
 
-
+*******************************************************
 ### Wifi 3Button
 
 1.  If GPIO16 is HIGH (less then < 5 sec) at startup it will go in N  mode - not going in sleep mode.
@@ -33,7 +35,7 @@ GPIO14
 
 
 
-
+*******************************************************
 ### WS2812B
 
 
@@ -46,7 +48,7 @@ GPIO14
 
 
 
-
+*******************************************************
 ### myEsp
 
 
