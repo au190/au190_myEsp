@@ -1,6 +1,6 @@
 
 *******************************************************
-#### Wifi Md or Wifi button
+# Wifi Md or Wifi button
 *******************************************************
 
 1.  If GPIO16 is HIGH (less then < 5 sec) at startup it will go in N  mode - not going in sleep mode.
@@ -18,7 +18,7 @@ Button = EN pin
 
 
 *******************************************************
-#### Wifi 3Button
+# Wifi 3Button
 *******************************************************
 
 1.  If GPIO16 is HIGH (less then < 5 sec) at startup it will go in N  mode - not going in sleep mode.
@@ -38,7 +38,7 @@ GPIO14
 
 
 *******************************************************
-#### WS2812B
+# WS2812B
 *******************************************************
 
 1.  After the firmware upload:
@@ -51,7 +51,7 @@ GPIO14
 
 
 *******************************************************
-#### myEsp
+# myEsp
 *******************************************************
 
 1.  After the firmware upload:
@@ -59,7 +59,7 @@ GPIO14
     2.  GPIO2 (Led) set to status Led_i_0.
 2.  After the Wifi config is done the GPIO16 must be set to not C_AP_MODE_BTN_I.
 3.  If no Wifi or MQTT connection restart after 5 min.
-
+4.  After the restart all the output set to OFF.
 
 
 Blink:
@@ -68,22 +68,17 @@ Blink:
 3.  2 sec       No MQTT
 
 
-# Configration info
-
-- Led_x - set the output as a status info
-- Led_x - set the output as a status info
-
-## Configration info
-
-- Led_x - set the output as a status info
-- Led_x - set the output as a status info
-
-### Configration info
-
-- Led_x - set the output as a status info
-- Led_x - set the output as a status info
+### Configuration info
+  - Led_x 
+      - set the output as a status info, x - is the output from the status comming.
+  - AP Button 
+      - If pressed the device go in AP mode. Ip: 192.168.4.1
 
 
+* Configuration info
+  * Led_x
+  * AP Button 
+      - If pressed the device go in AP mode. Ip: 192.168.4.1
 
 <pre>
 
