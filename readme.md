@@ -100,6 +100,11 @@ MyPlug:
 
 
 -----------   Get MQTT State   -----------
+Just for test
+cmnd/ws/in {"test":"","t1":100,"t2":4294967100}
+
+
+-----------   Get MQTT State   -----------
 cmnd/ws/state
 
 
@@ -127,6 +132,12 @@ cmnd/ws/in {"fsys":""}
 
 -----------   Get I2Cscan   -----------
 cmnd/ws/I2Cscan
+
+
+-----------   Temperature offset   -----------
+Save the offset in byte: Convert -12.7 - +12.8 C -> convert to 0 - 255. Just 1 decimal.
+cmnd/ws/tempoffset -2.6
+
 
 
 
