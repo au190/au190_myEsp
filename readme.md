@@ -97,9 +97,7 @@ MyPlug:
 
 
 
------------   Get MQTT State   -----------
-Just for test
-
+-----------   Just for test   -----------
 cmnd/ws/in {"test":"","t1":100,"t2":4294967100}
 
 -----------   Get MQTT State   -----------
