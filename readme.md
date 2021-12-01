@@ -12,7 +12,7 @@ Blink:
 3.  2 sec       No MQTT
 4.  3 sec       Normal mode
 
-Button = EN pin
+- Button = EN pin
 
 
 
@@ -29,9 +29,9 @@ Blink:
 3.  2 sec       No MQTT
 4.  3 sec       Normal mode
 
-GPIO12
-GPIO13
-GPIO14
+- GPIO12
+- GPIO13
+- GPIO14
 
 
 
@@ -73,7 +73,9 @@ Blink:
     - If pressed the device go in AP mode. Ip: 192.168.4.1
 
 
-<pre>
+```
+
+
 
 /*******************************************************
 
@@ -216,6 +218,7 @@ cmnd/ws/color 255,255,255
 ----------- Set Brightness  -----------
 Input 1 - 100
 response --> {"topic":"stat/ws/RESULT","color":"000080","bri":50}
+
 cmnd/ws/bri 50
 
 ----------- Set speed  -----------
@@ -232,6 +235,7 @@ cmnd/ws/effect Rainbow
 ----------- Set maxpower  -----------
 Input 1 -255 --> 100mA - 25 500 mA
 Power set to ledstreep = maxpower * 100 = 100 - 25500 milliamps
+
 cmnd/ws/maxpower 10
 
 *******************************************************
@@ -287,4 +291,6 @@ xtime;time
 
 *******************************************************/
 
-</pre>
+
+
+```
