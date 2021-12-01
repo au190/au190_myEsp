@@ -97,27 +97,33 @@ MyPlug:
 
 
 
-
-
 -----------   Get MQTT State   -----------
 Just for test
-cmnd/ws/in {"test":"","t1":100,"t2":4294967100}
 
+cmnd/ws/in {"test":"","t1":100,"t2":4294967100}
 
 -----------   Get MQTT State   -----------
 cmnd/ws/state
 
-
 -----------   Get MQTT Status   -----------
 cmnd/ws/Status 0
-
 
 -----------   Get Webpage Info   -----------
 cmnd/ws/info
 
-
 -----------   Get Webpage Config   -----------
 cmnd/ws/config
+
+-----------   Get filesystem of ESP   -----------
+cmnd/ws/in {"fsys":""}
+
+-----------   Temperature offset   -----------
+Save the offset in byte: Convert -12.7 - +12.8 C -> convert to 0 - 255. Just 1 decimal.
+
+cmnd/ws/tempoffset -2.6
+
+-----------   Get I2Cscan   -----------
+cmnd/ws/I2Cscan
 
 -----------   Get Webpage GPIO Config   -----------
 cmnd/ws/config_gpio
@@ -126,126 +132,27 @@ cmnd/ws/config_gpio
 cmnd/ws/reboot
 
 
------------   Get filesystem of ESP   -----------
-cmnd/ws/in {"fsys":""}
-
-
------------   Get I2Cscan   -----------
-cmnd/ws/I2Cscan
-
-
------------   Temperature offset   -----------
-Save the offset in byte: Convert -12.7 - +12.8 C -> convert to 0 - 255. Just 1 decimal.
-cmnd/ws/tempoffset -2.6
-
-
-
-
-
------------ Just for EN_WS2812B - Set Color  -----------
-cmnd/ws/color 255,0,0
-cmnd/ws/color 255,255,255
-response --> {"topic":"stat/ws/RESULT","color":"ff0000","bri":100}
-Input is: RBG color
-
-
------------ Just for EN_WS2812B - Set Brightness  -----------
-1 - 100
-cmnd/ws/bri 50
-response --> {"topic":"stat/ws/RESULT","color":"000080","bri":50}
-
-
------------ Just for EN_WS2812B - Set speed  -----------
-cmnd/ws/speed 50
-
-1 - 255
-default: 50
-
-
------------ Just for EN_WS2812B - Set effect -----------
-cmnd/ws/effect Rainbow
-
-Input is the effect name.
-
-
------------ Just for EN_WS2812B - Set maxpower  -----------
-1 -255 -> 100mA - 25 500 mA
-Power set to ledstreep = maxpower * 100 = 100 - 25500 milliamps
-cmnd/ws/maxpower 10
-
-
-
-
-*******************************************************
------------   ARDUINO commands  -----------
-*******************************************************
-
------------   Arduino OTA   -----------
-
-- Working just with wsS - Wifi serial Gateway. Used to reset the Arduino for OTA update.
-----------------------------
-cmnd/ws/ard_ota {"ard_ota":"1"}
-cmnd/ws/ard_ota {"ard_ota":"0"}
-
------------   Arduino get Configuration  -----------
-cmnd/ws/ar {"getConf":""}
-
-
------------   Arduino Reset Power  -----------
-cmnd/ws/ar {"resetPow":""}
-
-
------------   Arduino Get Set Power threshold  -----------
-
-cmnd/ws/ar {"powThre":""}
-cmnd/ws/ar {"powThre":"200"}
-
-
------------   Arduino Set Power Calibration  -----------
-Calibraton calculated automatically if not set the vaule, or set a specific vaule
-
-cmnd/ws/ar {"calib":""}
-cmnd/ws/ar {"calib":"540"}
-
-
------------   Arduino get state  -----------
-Get power data
-
-state;time
-
------------   Arduino get stauts  -----------
-Status;time
-
------------   Arduino set time   -----------
-Send the configuration to arduino after boot
-xtime;time
-
-
 
 *******************************************************
 -----------   TASMOTA compatibile commands  -----------
 *******************************************************
-
-
 All index represents the real GPIO pin number (POWER0 -> POWER16)
 
 
 -----------   Power   -----------
+Get - Set the Power status
 
 - Power can be 0, 1 ,ON, OFF, toggle
-- msg can be (POWER0 -> POWER16)
+- Command can be (POWER0 -> POWER16)
 - toggle = if power state is ON switch to OFF and vice versa
-----------------------------
-Get the Power status
+
 cmnd/ws/POWER7
-Set the Power status
+cmnd/ws/POWER7 toggle
 cmnd/ws/POWER7 ON
 cmnd/ws/POWER7 OFF
 
-
 -----------   PulseTime   -----------
-
-Msg can be (PulseTime0 -> PulseTime16) represents (POWER0 -> POWER16)
+Command can be (PulseTime0 -> PulseTime16) represents (POWER0 -> POWER16)
 
 Display the amount of PulseTime remaining on the corresponding Relay<x> <value> Set the duration to keep Relay<x> ON when Power<x> ON command is issued. 
 After this amount of time, the power will be turned OFF.
@@ -265,45 +172,120 @@ After this amount of time, the power will be turned OFF.
 113   - 13 sec
 (sec + 100) = in second
 
-----------------------------
 - PulseTime - set pulse time to (POWER0 -> POWER16)
-- if PulseTime is 0 then - PulseTime is off
-- if PulseTime is empty then will be request the state
-----------------------------
+- If PulseTime is 0 then - PulseTime is off
+- If PulseTime is empty return the current value
+
 cmnd/ws/PulseTime5
 cmnd/ws/PulseTime5 300
 
 -----------   PulseTimeOn   -----------
-
 PulseTimeOn - Turn ON the GPIO without sending a POWER ON msg
             - It can be 1 or other
             - defult 255
-----------------------------
+
 cmnd/ws/PulseTimeOn
 cmnd/ws/PulseTimeOn 1
 
-
 -----------   TelePeriod   -----------
-
 How often sends the telemetry MQTT msg.
 
 - TelePeriod in seconds (min time is 10 sec max time is 3600)
-- if TelePeriod is empty then will be request the state
-----------------------------
+
 cmnd/ws/TelePeriod
 cmnd/ws/TelePeriod 300
 
-
 -----------   Dimmer   -----------
-- msg can be (Dimmer0 -> Dimmer16)
-
+Command can be (Dimmer0 -> Dimmer16)
 Dimmer led with PWM 1 - 100%
-Get or Set the dimmer
-----------------------------
+
 cmnd/ws/Dimmer1
 cmnd/ws/Dimmer1 50
 
 
+
+*******************************************************
+-----------   Just for EN_WS2812B  -----------
+*******************************************************
+
+----------- Set Color  -----------
+Input is: RBG color
+response --> {"topic":"stat/ws/RESULT","color":"ff0000","bri":100}
+
+cmnd/ws/color 255,0,0
+cmnd/ws/color 255,255,255
+
+----------- Set Brightness  -----------
+Input 1 - 100
+response --> {"topic":"stat/ws/RESULT","color":"000080","bri":50}
+cmnd/ws/bri 50
+
+----------- Set speed  -----------
+Input 1 - 255
+default: 50
+
+cmnd/ws/speed 50
+
+----------- Set effect -----------
+Input is the effect name.
+
+cmnd/ws/effect Rainbow
+
+----------- Set maxpower  -----------
+Input 1 -255 --> 100mA - 25 500 mA
+Power set to ledstreep = maxpower * 100 = 100 - 25500 milliamps
+cmnd/ws/maxpower 10
+
+*******************************************************
+-----------   Just for EN_WS2812B  -----------
+*******************************************************
+
+
+
+*******************************************************
+-----------   Just for ARDUINO -----------
+*******************************************************
+
+-----------   Arduino OTA   -----------
+- Working just with wsS - Wifi serial Gateway. Used to reset the Arduino for OTA update.
+
+cmnd/ws/ard_ota {"ard_ota":"1"}
+cmnd/ws/ard_ota {"ard_ota":"0"}
+
+-----------   Arduino get Configuration  -----------
+cmnd/ws/ar {"getConf":""}
+
+-----------   Arduino Reset Power  -----------
+cmnd/ws/ar {"resetPow":""}
+
+-----------   Arduino Get Set Power threshold  -----------
+cmnd/ws/ar {"powThre":""}
+cmnd/ws/ar {"powThre":"200"}
+
+-----------   Arduino Set Power Calibration  -----------
+Calibraton calculated automatically if not set the vaule, or set a specific vaule
+
+cmnd/ws/ar {"calib":""}
+cmnd/ws/ar {"calib":"540"}
+
+-----------   Arduino set time  -----------
+Get the power info from Arduino, used internally, runs periodically at state_telemetryperiod
+
+state;time
+
+-----------   Arduino get stauts  -----------
+Get all the output status form Arduino, used internally
+
+Status;time
+
+-----------   Arduino set time   -----------
+Send the configuration to arduino after boot, used internally
+
+xtime;time
+
+*******************************************************
+-----------   Just for ARDUINO -----------
+*******************************************************
 
 *******************************************************/
 
