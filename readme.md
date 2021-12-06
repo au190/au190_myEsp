@@ -2,9 +2,9 @@
 ### Wifi Md or Wifi button
 
 
-1.  If GPIO16 is HIGH (less then < 5 sec) at startup it will go in N  mode - not going in sleep mode.
-2.  In N mode if GPIO16 is HIGH it will go in AP mode - not going in sleep mode.
-3.  From N mode or AP mode after 2 min go to sleep.
+1.  If GPIO0 pull to LOW (less then < 5 sec) at startup it will go in N  mode - not going in sleep mode.
+2.  In N mode if GPIO0 is LOW it will go in AP mode - not going in sleep mode.
+3.  From N mode or AP mode after 3 min go to sleep.
 
 Blink:
 1.  100 msec    Connecting to Wifi
@@ -19,9 +19,9 @@ Blink:
 *******************************************************
 ### Wifi 3Button
 
-1.  If GPIO16 is HIGH (less then < 5 sec) at startup it will go in N  mode - not going in sleep mode.
-2.  In N mode if GPIO16 is HIGH it will go in AP mode - not going in sleep mode.
-3.  From N mode or AP mode after 2 min go to sleep.
+1.  If GPIO0 pull to LOW (less then < 5 sec) at startup it will go in N  mode - not going in sleep mode.
+2.  In N mode if GPIO0 is LOW it will go in AP mode - not going in sleep mode.
+3.  From N mode or AP mode after 3 min go to sleep.
 
 Blink:
 1.  100 msec    Connecting to Wifi
@@ -40,10 +40,8 @@ Blink:
 
 
 1.  After the firmware upload:
-    1.  GPIO16 set to C_AP_MODE_BTN_I allways go in AP mode.
-    2.  GPIO2 (Led) set to status Led_i_0.
-2.  After the Wifi config is done the GPIO16 must be set to not C_AP_MODE_BTN_I.
-4.  GPIO4 is the output for WS2812B - do not use this pin for other config !!!
+    - GPIO2 (Led) set to status Led_i_0.
+2.  GPIO4 is the output for WS2812B - do not use this pin for other config !!!
 
 
 
@@ -52,10 +50,9 @@ Blink:
 
 
 1.  After the firmware upload:
-    1.  GPIO16 set to C_AP_MODE_BTN_I allways go in AP mode.
-    2.  GPIO2 (Led) set to status Led_i_0.
-2.  After the Wifi config is done the GPIO16 must be set to not C_AP_MODE_BTN_I.
-3.  After the restart all the output set to OFF.
+    - GPIO2 (Led) set to status Led_i_0.
+2.  After the restart all the output set to OFF.
+3.  3x3 power cycle. Power the device on for 3 sec, repeat 3 times after that go in AP mode. Interval (ON >= 3, OFF < 9) sec.
 
 
 Blink:
@@ -75,8 +72,8 @@ Blink:
     - GPIO pin set as input and GPIO_16 is pulled to GND internally and GPIO_0 --> GPIO_15 is pulled to Vcc internally.
     - Checks in every 50msec and send the status ON or OFF
   - Led_x
-    - Set the output as a status info
-    - If GPIOx set as an output then show the output status.
+    - Status info Led for Wifi, AP mode, MQTT connections.
+    - If GPIOx set as an output then show the output status. Ex: GPIO4 = Output, GPIO2 = Ledx_i_4
   - AP Button
     - GPIO pulled to VCC the device go in AP mode. Ip: 192.168.4.1
   - AP Button_i
@@ -87,7 +84,6 @@ Blink:
 #### Module functions
  
 ```
-
 
 /*******************************************************
 
