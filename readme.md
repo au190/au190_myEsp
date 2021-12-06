@@ -52,7 +52,7 @@ Blink:
 1.  After the firmware upload:
     - GPIO2 (Led) set to status Led_i_0.
 2.  After the restart all the output set to OFF.
-3.  3x3 power cycle. Power the device on for 3 sec, repeat 3 times after that go in AP mode. Interval (ON >= 3, OFF < 9) sec.
+3.  4x3 power cycle. Power the device on for 4 sec, repeat 3 times after that go in AP mode. Interval (ON > 4, OFF < 9) sec.
 
 
 Blink:
