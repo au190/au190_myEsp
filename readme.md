@@ -43,7 +43,6 @@ Blink:
     1.  GPIO16 set to C_AP_MODE_BTN_I allways go in AP mode.
     2.  GPIO2 (Led) set to status Led_i_0.
 2.  After the Wifi config is done the GPIO16 must be set to not C_AP_MODE_BTN_I.
-3.  If no Wifi or MQTT connection restart after 5 min.
 4.  GPIO4 is the output for WS2812B - do not use this pin for other config !!!
 
 
@@ -56,8 +55,7 @@ Blink:
     1.  GPIO16 set to C_AP_MODE_BTN_I allways go in AP mode.
     2.  GPIO2 (Led) set to status Led_i_0.
 2.  After the Wifi config is done the GPIO16 must be set to not C_AP_MODE_BTN_I.
-3.  If no Wifi or MQTT connection restart after 5 min.
-4.  After the restart all the output set to OFF.
+3.  After the restart all the output set to OFF.
 
 
 Blink:
@@ -67,14 +65,28 @@ Blink:
 
 
 #### Configuration info
-  - Led_x 
-    - set the output as a status info, x - is the output from the status comming.
-  - AP Button 
-    - If pressed the device go in AP mode. Ip: 192.168.4.1
+  - Input
+    - GPIO pin set as input
+    - Checks in every 50msec and send the status ON or OFF
+  - Input_i
+    - GPIO pin set as inverted input
+    - Checks in every 50msec and send the status ON or OFF
+  - Input_pull
+    - GPIO pin set as input and GPIO_16 is pulled to GND internally and GPIO_0 --> GPIO_15 is pulled to Vcc internally.
+    - Checks in every 50msec and send the status ON or OFF
+  - Led_x
+    - Set the output as a status info
+    - If GPIOx set as an output then show the output status.
+  - AP Button
+    - GPIO pulled to VCC the device go in AP mode. Ip: 192.168.4.1
+  - AP Button_i
+    - GPIO pulled to GND the device go in AP mode. Ip: 192.168.4.1
 
+    
 
+#### Module functions
+ 
 ```
-
 
 
 /*******************************************************
