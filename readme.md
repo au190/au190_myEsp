@@ -1,7 +1,6 @@
 *******************************************************
 ### Wifi Md or Wifi button
 
-
 1.  If GPIO0 pull to LOW (less then < 5 sec) at startup it will go in N  mode - not going in sleep mode.
 2.  In N mode if GPIO0 is LOW it will go in AP mode - not going in sleep mode.
 3.  From N mode or AP mode after 3 min go to sleep.
@@ -38,10 +37,7 @@ Blink:
 *******************************************************
 ### WS2812B
 
-
-1.  After the firmware upload:
-    - GPIO2 (Led) set to status Led_i_0.
-2.  GPIO4 is the output for WS2812B - do not use this pin for other config !!!
+1.  Same as myEsp just GPIO4 is the output for WS2812B - do not use this pin for other config !!!
 
 
 
@@ -49,8 +45,7 @@ Blink:
 ### myEsp
 
 
-1.  After the firmware upload:
-    - GPIO2 (Led) set to status Led_i_0.
+1.  After the firmware upload GPIO2 (Led) set to status Led_i_0.
 2.  After the restart all the output set to OFF.
 3.  4x3 power cycle. Power the device on for 4 sec, repeat 3 times after that go in AP mode. Interval (ON > 4, OFF < 9) sec.
 
@@ -97,14 +92,13 @@ tele
 ----------- Module configurations -----------
 *******************************************************
 Multisensor:
-{"o_0":255,"o_1":255,"o_2":14,"o_3":0,"o_4":255,"o_5":6,"o_12":8,"o_13":9,"o_14":15,"o_15":10,"o_16":255,"o_17":81}
+{"o_0":255,"o_1":255,"o_2":155,"o_3":255,"o_4":255,"o_5":6,"o_12":8,"o_13":9,"o_14":15,"o_15":255,"o_16":255,"o_17":81}
 
 Irrigation:
-{"o_0":12,"o_1":255,"o_2":14,"o_3":0,"o_4":4,"o_5":4,"o_12":4,"o_13":5,"o_14":4,"o_15":4,"o_16":10,"o_17":255}
+{"o_0":12,"o_1":255,"o_2":255,"o_3":255,"o_4":4,"o_5":4,"o_12":4,"o_13":5,"o_14":4,"o_15":4,"o_16":255,"o_17":255}
 
 MyPlug:
-{"o_0":255,"o_1":255,"o_2":255,"o_3":0,"o_4":4,"o_5":154,"o_12":8,"o_13":9,"o_14":255,"o_15":255,"o_16":10,"o_17":255}
-
+{"o_0":255,"o_1":255,"o_2":255,"o_3":255,"o_4":4,"o_5":154,"o_12":8,"o_13":9,"o_14":255,"o_15":255,"o_16":255,"o_17":255}
 
 
 -----------   Just for test   -----------
@@ -298,7 +292,5 @@ xtime;time
 *******************************************************
 
 *******************************************************/
-
-
 
 ```
