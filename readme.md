@@ -64,15 +64,15 @@ Blink:
     - GPIO pin set as inverted input
     - Checks in every 50msec and send the status ON or OFF
   - Input_pull
-    - GPIO pin set as input and GPIO_16 is pulled to GND internally and GPIO_0 --> GPIO_15 is pulled to Vcc internally.
+    - GPIO pin set as input and GPIO_16 is pulled to LOW internally and GPIO_0 --> GPIO_15 is pulled to HIGH internally.
     - Checks in every 50msec and send the status ON or OFF
   - Led_x
     - Status info Led for Wifi, AP mode, MQTT connections.
     - If GPIOx set as an output then show the output status. Ex: GPIO4 = Output, GPIO2 = Ledx_i_4
   - AP Button
-    - GPIO pulled to VCC the device go in AP mode. Ip: 192.168.4.1
+    - GPIO pulled to HIGH the device go in AP mode. Ip: 192.168.4.1
   - AP Button_i
-    - GPIO pulled to GND the device go in AP mode. Ip: 192.168.4.1
+    - GPIO pulled to LOW the device go in AP mode. Ip: 192.168.4.1
 
     
 
