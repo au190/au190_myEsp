@@ -190,7 +190,7 @@ cmnd/ws/PulseTime5
 cmnd/ws/PulseTime5 300
 
 -----------   PulseTimeOn   -----------
-PulseTimeOn - If PulseTime msg is sent the output turns ON automatically.
+PulseTimeOn - If PulseTime msg is sent, the output turns ON automatically.
             - It can be 0 or 1
 
 cmnd/ws/PulseTimeOn
