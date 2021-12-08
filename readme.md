@@ -66,6 +66,14 @@ Blink:
   - Input_pull
     - GPIO pin set as input and GPIO_16 is pulled to LOW internally and GPIO_0 --> GPIO_15 is pulled to HIGH internally.
     - Checks in every 50msec and send the status ON or OFF
+  - Motion
+    - GPIO pin set as input and GPIO_16 is pulled to LOW internally and GPIO_0 --> GPIO_15 is pulled to HIGH internally.
+    - Checks in every 50msec and send the status ON or OFF
+    - If the input is HIGH send the md message in every 10sec untl the input is HIGH.
+  - Motion_i
+    - GPIO pin set as input and GPIO_16 is pulled to LOW internally and GPIO_0 --> GPIO_15 is pulled to HIGH internally.
+    - Checks in every 50msec and send the status ON or OFF
+    - If the input is LOW send the md message in every 10sec untl the input is LOW.
   - Led_x
     - Status info Led for Wifi, AP mode, MQTT connections.
     - If GPIOx set as an output then show the output status. Ex: GPIO4 = Output, GPIO2 = Ledx_i_4
@@ -182,9 +190,8 @@ cmnd/ws/PulseTime5
 cmnd/ws/PulseTime5 300
 
 -----------   PulseTimeOn   -----------
-PulseTimeOn - Turn ON the GPIO without sending a POWER ON msg
-            - It can be 1 or other
-            - defult 255
+PulseTimeOn - If PulseTime msg is sent the output turns ON automatically.
+            - It can be 0 or 1
 
 cmnd/ws/PulseTimeOn
 cmnd/ws/PulseTimeOn 1
