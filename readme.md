@@ -140,6 +140,20 @@ cmnd/ws/config_gpio
 -----------   Reboot ESP   -----------
 cmnd/ws/reboot
 
+-----------   PulseTimeOn   -----------
+PulseTimeOn - Turn ON the GPIO without sending a POWER ON msg
+            - It can be 1 or other
+            - defult 255
+
+cmnd/ws/PulseTimeOn
+cmnd/ws/PulseTimeOn 1
+
+----------- Set cpuspeed  -----------
+Working interval for cpu in millisec
+Input 1 - 255
+default: 50
+
+cmnd/ws/cpuspeed 50
 
 
 *******************************************************
@@ -187,21 +201,6 @@ After this amount of time, the power will be turned OFF.
 
 cmnd/ws/PulseTime5
 cmnd/ws/PulseTime5 300
-
------------   PulseTimeOn   -----------
-PulseTimeOn - Turn ON the GPIO without sending a POWER ON msg
-            - It can be 1 or other
-            - defult 255
-
-cmnd/ws/PulseTimeOn
-cmnd/ws/PulseTimeOn 1
-
------------ Set cpuspeed  -----------
-Working interval for cpu in millisec
-Input 1 - 255
-default: 50
-
-cmnd/ws/cpuspeed 50
 
 -----------   TelePeriod   -----------
 How often sends the telemetry MQTT msg.
