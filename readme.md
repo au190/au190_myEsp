@@ -87,7 +87,6 @@ Blink:
 #### Module functions
  
 ```
-
 /*******************************************************
 
 Event Commands - the key is the first element in the json object
@@ -190,16 +189,25 @@ cmnd/ws/PulseTime5
 cmnd/ws/PulseTime5 300
 
 -----------   PulseTimeOn   -----------
-PulseTimeOn - If PulseTime msg is sent, the output turns ON automatically.
-            - It can be 0 or 1
+PulseTimeOn - Turn ON the GPIO without sending a POWER ON msg
+            - It can be 1 or other
+            - defult 255
 
 cmnd/ws/PulseTimeOn
 cmnd/ws/PulseTimeOn 1
+
+----------- Set cpuspeed  -----------
+Working interval for cpu in millisec
+Input 1 - 255
+default: 50
+
+cmnd/ws/cpuspeed 50
 
 -----------   TelePeriod   -----------
 How often sends the telemetry MQTT msg.
 
 - TelePeriod in seconds (min time is 10 sec max time is 3600)
+- TelePeriod 65535 will reset the Esp memmory to default (new the flash).
 
 cmnd/ws/TelePeriod
 cmnd/ws/TelePeriod 300
@@ -229,12 +237,6 @@ Input 1 - 100
 response --> {"topic":"stat/ws/RESULT","color":"000080","bri":50}
 
 cmnd/ws/bri 50
-
------------ Set speed  -----------
-Input 1 - 255
-default: 50
-
-cmnd/ws/speed 50
 
 ----------- Set effect -----------
 Input is the effect name.
@@ -280,7 +282,7 @@ cmnd/ws/ar {"calib":""}
 cmnd/ws/ar {"calib":"540"}
 
 -----------   Arduino set time  -----------
-Get the power info from Arduino, used internally, runs periodically at state_telemetryperiod
+Get the power info from Arduino, used internally, runs periodically at state_telemetry_period
 
 state;time
 
@@ -299,5 +301,4 @@ xtime;time
 *******************************************************
 
 *******************************************************/
-
 ```
