@@ -1,8 +1,8 @@
 *******************************************************
 ### Wifi Md or Wifi button
 
-1.  If GPIO0 pull to LOW (less then < 5 sec) at startup it will go in N  mode - not going in sleep mode.
-2.  In N mode if GPIO0 is LOW it will go in AP mode - not going in sleep mode.
+1.  If GPIO16 pull to HIGH (less then < 5 sec) at startup it will go in N  mode - not going in sleep mode.
+2.  In N mode if GPIO16 is HIGH it will go in AP mode - not going in sleep mode.
 3.  From N mode or AP mode after 3 min go to sleep.
 
 Blink:
@@ -18,8 +18,8 @@ Blink:
 *******************************************************
 ### Wifi 3Button
 
-1.  If GPIO0 pull to LOW (less then < 5 sec) at startup it will go in N  mode - not going in sleep mode.
-2.  In N mode if GPIO0 is LOW it will go in AP mode - not going in sleep mode.
+1.  If GPIO16 pull to HIGH (less then < 5 sec) at startup it will go in N  mode - not going in sleep mode.
+2.  In N mode if GPIO16 is HIGH it will go in AP mode - not going in sleep mode.
 3.  From N mode or AP mode after 3 min go to sleep.
 
 Blink:
