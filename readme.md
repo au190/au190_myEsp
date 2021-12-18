@@ -155,6 +155,14 @@ default: 50
 
 cmnd/ws/cpuspeed 50
 
+----------- Set pms5003_speed  -----------
+Control sensor polling interval to extend lifetime (in minutes).
+Input 1 - 255
+default: 20
+
+cmnd/ws/pms5003_speed 30
+
+
 
 *******************************************************
 -----------   TASMOTA compatibile commands  -----------
