@@ -214,7 +214,7 @@ cmnd/ws/PulseTime5 300
 How often sends the telemetry MQTT msg.
 
 - TelePeriod in seconds (min time is 10 sec max time is 3600)
-- TelePeriod 65535 will reset the Esp memmory to default (new the flash).
+- TelePeriod 65535 will reset the Esp memmory to default (like a new flash).
 
 cmnd/ws/TelePeriod
 cmnd/ws/TelePeriod 300
