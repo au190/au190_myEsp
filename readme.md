@@ -14,7 +14,6 @@ Blink:
 - Button = EN pin
 
 
-
 *******************************************************
 ### Wifi 3Button
 
@@ -47,7 +46,7 @@ Blink:
 
 1.  After the firmware upload GPIO2 (Led) set to status Led_i_0.
 2.  After the restart all the output set to OFF.
-3.  4x3 power cycle. Power the device on for 4 sec, repeat 3 times after that go in AP mode. Interval (ON > 4, OFF < 9) sec. After 3 correct power cycle go in AP mode, on the next power cycle go again in Normal mode.
+3.  3x4 power cycle. Power the device on for 4 sec 3 times(exactly 3 power cycle !!!), on the 4 power cycle go in AP mode. Interval (ON > 4, OFF < 9) sec. Power cycle 4 reseting the PowerCycle to default.
 
 
 Blink:
@@ -99,7 +98,7 @@ tele
 ----------- Module configurations -----------
 *******************************************************
 Multisensor:
-{"o_0":255,"o_1":255,"o_2":155,"o_3":255,"o_4":255,"o_5":6,"o_12":8,"o_13":9,"o_14":15,"o_15":255,"o_16":255,"o_17":81}
+{"o_0":255,"o_1":255,"o_2":175,"o_3":255,"o_4":255,"o_5":6,"o_12":8,"o_13":9,"o_14":15,"o_15":255,"o_16":255,"o_17":81}
 
 Irrigation:
 {"o_0":12,"o_1":255,"o_2":255,"o_3":255,"o_4":4,"o_5":4,"o_12":4,"o_13":5,"o_14":4,"o_15":4,"o_16":255,"o_17":255}
@@ -107,6 +106,11 @@ Irrigation:
 MyPlug:
 {"o_0":255,"o_1":255,"o_2":255,"o_3":255,"o_4":4,"o_5":154,"o_12":8,"o_13":9,"o_14":255,"o_15":255,"o_16":255,"o_17":255}
 
+Wifi_Md
+{"o_0":255,"o_1":255,"o_2":170,"o_3":0,"o_4":0,"o_5":0,"o_12":255,"o_13":255,"o_14":255,"o_15":255,"o_16":10,"o_17":0}
+
+Multisensor PMS:
+{"o_0":14,"o_1":255,"o_2":175,"o_3":255,"o_4":13,"o_5":6,"o_12":8,"o_13":9,"o_14":15,"o_15":255,"o_16":255,"o_17":81}
 
 -----------   Just for test   -----------
 cmnd/ws/in {"test":"","t1":100,"t2":4294967100}
@@ -158,7 +162,7 @@ cmnd/ws/cpuspeed 50
 ----------- Set pms5003_speed  -----------
 Control sensor polling interval to extend lifetime (in minutes).
 Input 1 - 255
-default: 20
+default: 30
 
 cmnd/ws/pms5003_speed 30
 
@@ -284,6 +288,12 @@ cmnd/ws/maxpower 10
 -----------   Just for APP_WS2812B  -----------
 *******************************************************
 
+*******************************************************
+-----------   Just for USE_AHT2x -----------
+*******************************************************
+
+- When we are using the sensor USE_AHT2x. We need to set the CPU = 100. When we write to sensor, we have to red out he message in 100 ms.
+- Use the I2C_SCL and I2C_SDA for this sensor.
 
 *******************************************************
 -----------   Just for ARDUINO -----------
@@ -331,4 +341,22 @@ xtime;time
 *******************************************************
 
 *******************************************************/
+
+*******************************************************
+-----------   Upload the the firmware in different way -----------
+*******************************************************
+
+*******************************************************/
+
+python d:\G_Drive\MySoft\IHome\Ha\ota\espota_manual.py -i 192.168.1.4 -p 8266 --auth= -f d:\uC\myEsp\myEsp\myEsp.ino.generic.bin
+
+
+C:\Users\admin\Documents\ArduinoData\packages\esp8266\tools\python3\3.7.2-post1/python3 C:\Users\admin\Documents\ArduinoData\packages\esp8266\hardware\esp8266\2.7.4/tools/upload.py --chip esp8266 --port COM4 --baud 115200 --before default_reset --after hard_reset write_flash 0x0 d:\uC\myEsp\myEsp\myEsp.ino.generic.bin
+C:\Users\admin\Documents\ArduinoData\packages\esp8266\tools\python3\3.7.2-post1/python3 C:\Users\admin\Documents\ArduinoData\packages\esp8266\hardware\esp8266\2.7.4/tools/upload.py --chip esp8266 --port COM4 --baud 115200 erase_flash --before default_reset --after hard_reset write_flash 0x0 d:\uC\myEsp\myEsp\myEsp.ino.generic.bin
+
+
+
+c:\Program Files\Python37\python.exe" d:\G_Drive\MySoft\IHome\Ha\ota\ard_ota\ard_ota.py -i 192.168.1.8 -f d:\uC\myEsp\a1_lawnmower\a1_lawnmower.ino.eightanaloginputs.hex
+
 ```
+
