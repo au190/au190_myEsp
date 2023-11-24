@@ -153,7 +153,7 @@ cmnd/ws/PulseTimeOn
 cmnd/ws/PulseTimeOn 1
 
 ----------- Set cpuspeed  -----------
-Working interval for cpu in millisec
+Working interval for cpu in millisec. If you change this the webpage maybe not work.(recoonnect 1000ms)
 Input 1 - 255
 default: 50
 
