@@ -296,6 +296,41 @@ cmnd/ws/maxpower 10
 - Use the I2C_SCL and I2C_SDA for this sensor.
 
 *******************************************************
+-----------   Just for USE_RC_SWITCH -----------
+*******************************************************
+- When we are using RF 433MHz sensor USE_RC_SWITCH. 
+Supported chipsets:
+SC5262 / SC5272
+HX2262 / HX2272
+PT2262 / PT2272
+EV1527 / RT1527 / FP1527 / HS1527 
+Intertechno outlets
+HT6P20X 
+
+----------- Enable disable protocols -----------
+I have 37 protocol for RF. I can enable or disable one by one using rf_protocol_mask. Protocol max is hold on a 8 byte, 64 bit in memmory. Low bit = protocol 1. Ex: 1057 is the protocol: 1, 6, 11
+Max number of long long 64 bit = 18446744073709551615. I can set 64 different type of protcol. 
+cmnd/ws/rf_protocol_mask 
+cmnd/ws/rf_protocol_mask 18446744073709551615
+
+----------- Scann RF signals -----------
+Start to record the timeings(buffer_size) on the interrupt input pin.
+Will try to find out the protocol start.
+buffer_size - [0 1024] 
+tolerance   - [0 100] in %
+filter      - filter out signals shorter that 350 us. [-32768 32767]
+
+cmnd/ws/rf_scann {"buffer_size":512,"tolerance":50,"filter":350}
+
+----------- Send Raw RF signal Under develeopment -----------
+cmnd/ws/rf_sendraw {"data":"21,-56,34,-253,519,-265,165,-202,151,-256"}
+
+----------- Send RF signal -----------
+cmnd/ws/rf_send {"data":14448796,"bits":24,"protocol":1,"pulse":350}
+
+
+
+*******************************************************
 -----------   Just for ARDUINO -----------
 *******************************************************
 

@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="utf-8" charset="utf-8">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes">
+    <link rel="shortcut icon" href="#">
+    <title>Inteligent Home</title>
+    <script type="text/javascript">
+/*
+	Copyright (c) 2021 Kallós Róbert. All rights reserved.
+
+	
+*/
+var _ver                  = 'ver[2024_01_24] by au190';
+var ws                    = null;
+var wsc                   = 1;
+var wsIp                  = '';
+var ws_prev_st            = 9;    // Websocket previous state.
+var ws_err                = 0;    // Websocket error count.
+var g_topic               = '';
+var g_au190	= {
+
+	lm:                   '',                             //last menu clicked
+
+};
+
+var g_pc    = 0;// process counter
+var _pss;       // Stop the process counter
+
+var gpio = [
+['Not Set (255)', 255],
+['Input (1)', 1],
+['Input_i (2)', 2],
+['Input_pull_i (3)', 3],
+['Output (4)', 4],
+['Output_i (5)', 5],
+['PWM (6)', 6],
+['PWM_i (7)', 7],
+['I2C SCL (8)', 8],
+['I2C SDA (9)', 9],
+['AP Button (10)', 10],
+['AP Button_i (11)', 11],
+['Arduino RST (12)', 12],
+['PMS5003_RX (13)', 13],
+['PMS5003_TX (14)', 14],
+['Motion (15)', 15],
+['Motion_i (16)', 16],
+['RF_Recv (17)', 17],
+['RF_Send (18)', 18],
+
+['Led_0 (150)', 150],
+['Led_1 (151)', 151],
+['Led_2 (152)', 152],
+['Led_3 (153)', 153],
+['Led_4 (154)', 154],
+['Led_5 (155)', 155],
+['Led_12 (162)', 162],
+['Led_13 (163)', 163],
+['Led_14 (164)', 164],
+['Led_15 (165)', 165],
+['Led_16 (166)', 166],
+['Led_i_0 (170)', 170],
+['Led_i_1 (171)', 171],
+['Led_i_2 (172)', 172],
+['Led_i_3 (173)', 173],
+['Led_i_4 (174)', 174],
+['Led_i_5 (175)', 175],
+['Led_i_12 (182)', 182],
+['Led_i_13 (183)', 183],
+['Led_i_14 (184)', 184],
+['Led_i_15 (185)', 185],
+['Led_i_16 (186)', 186],
+
+
+];
+var a0 = [
+['Not Set (255)', 255],
+['Analog (80)', 80],
+['Light (81)', 81],
+];
+
+/************************************************************************************************************************************************************************************
+
+	--> Global Fc
+
+************************************************************************************************************************************************************************************/
+/*******************************************************
+
+	Prototype Get javascript date format dateformat
+	
+
+	var date = new Date().getDateFormat('yyyy-mm-dd hh:ii');
+	log.l(date);
+	
+	var date = new Date().getDateFormat('yyyy-mm-dd hh:ii:ss');
+	log.l(date);
+	
+	var date = new Date().getDateFormat('yyyy-mm-dd hh:ii:ss:SSS');
+	log.l(date);
+
+	new Date().getDateFormat('hh:ii')
+	
+*******************************************************/
+Date.prototype.getDateFormat = function(f) {
+	
+	var yyyy 	= this.getFullYear().toString();
+	f 			= f.replace(/yyyy/g, yyyy);
+	var mm 		= (this.getMonth()+1).toString(); 
+	f 			= f.replace(/mm/g, (mm[1]?mm:"0"+mm[0]));
+	var dd  	= this.getDate().toString();
+	f 			= f.replace(/dd/g, (dd[1]?dd:"0"+dd[0]));
+	var hh 		= this.getHours().toString();
+	f 			= f.replace(/hh/g, (hh[1]?hh:"0"+hh[0]));
+	var ii 		= this.getMinutes().toString();
+	f 			= f.replace(/ii/g, (ii[1]?ii:"0"+ii[0]));
+	var ss  	= this.getSeconds().toString();
+	f 			= f.replace(/ss/g, (ss[1]?ss:"0"+ss[0]));
+	var ms  	= this.getMilliseconds().toString();
+	f 			= f.replace(/SSS/g, ms[2]?ms:ms[1]?("0"+ms[1]+ms[0]):("00"+ms[0]) );
+
+	return f;
+};
+/*************************************************************************************
+	
+	-->	Get Url parameters
+	getVars
+	
+*************************************************************************************/
+function f_gvar(){
+	var vars 	= {};
+	var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+		vars[key] = value;
+	});
+	return vars;
+}
+/*******************************************************
+
+	LocalStorage ha nincs ilyen name akkor létrehozza
+	
+	Get Storage data if not exist, set the default
+	n	- LocalStorage name
+	d	- If not set this name, set default value (d)
+	
+*******************************************************/
+function f_gls(n, d){
+	var ret = "";
+	try{
+		if(typeof localStorage != "undefined"){
+
+      ret = JSON.parse(localStorage.getItem(n));
+			//console.log('f_gls: [' + n + '][' + d + '][' + ret + ']');
+			if( ret == null || ret == 'null'){
+				if(typeof d == "undefined"){
+					d = '';
+				}
+				f_sls(n, d);
+				ret = JSON.parse(localStorage.getItem(n));
+			}
+		}
+	}catch(e){
+		console.error('f_gls: [' + n + '] ' + e);
+	}
+	//console.log('<-- f_gls: [' + n + '][' + localStorage.getItem(n) + '][' + ret + ']');
+	return ret;
+}
+/*******************************************************
+
+	Set Storage data
+
+*******************************************************/
+function f_sls(n, d){
+
+	if(typeof localStorage != 'undefined'){
+    localStorage.setItem(n, JSON.stringify(d));
+	}else{
+		alert('No local storage here');
+	}
+}
+/*******************************************************
+
+	Delete Storage data
+	
+*******************************************************/
+function f_dls(n){
+
+	if(typeof localStorage != 'undefined'){
+		localStorage.removeItem(n);
+	}else{
+		alert('No local storage here');
+	}
+}
+
+
+
+
+/************************************************************************************************************************************************************************************
+
+	--> Html Functions, socket Functions
+
+************************************************************************************************************************************************************************************/
+/*******************************************************
+
+  Get or set radio button value
+  
+  <span>
+    <label class="rb"><input type="radio" name="rb" onchange="rb('rb');" value="drag">Drag</label>
+    <label class="rb"><input type="radio" name="rb" onchange="rb('rb');" value="rectangle">Rectangle</label>
+  </span>
+  var x =  = fRb('rb')
+  fRb('rb', g_au190.dr_fc);
+	
+*******************************************************/
+function fRb(n,v) {
+  var i, r = document.getElementsByName(n);
+  for(i = 0; i < r.length; i++){
+    
+    //console.log('fRb: ' +  n + ' ' + v + ' ' + r[i].checked + ' ' + r[i].value);
+    if(typeof(v) == "undefined"){//get rb value
+      if(r[i].checked){
+        return r[i].value;
+      }
+    }else if(v == r[i].value){//set rb
+      r[i].checked = true;
+      return;
+    }
+  }
+  return '';
+}
+/*******************************************************
+
+  Set value in Combo box
+  co('co_1', g_au190.dr_color);
+	
+*******************************************************/
+function co(id, v){
+  let e = document.getElementById(id);
+  e.value = v;
+}
+/*******************************************************
+
+  Update all class with the name
+	
+*******************************************************/
+function cl_1(s){
+  var x = document.getElementsByClassName('wr');
+  for(var i = 0; i < x.length; i++){
+    
+    if(s == x[i].id){
+      x[i].classList.remove('h_w');
+      x[i].classList.add('s_w');
+    }else{
+      x[i].classList.remove('s_w');
+      x[i].classList.add('h_w');
+    }
+  }
+}
+/*******************************************************
+
+  Create combo from matrix
+	
+*******************************************************/
+function ccb(id, d, s){
+  
+  var r = "<select id='"+id+"'>";
+  for(var i = 0; i < d.length; i++){
+    if(s == d[i][1]){
+      r += "<option selected value='"+d[i][1]+"'>"+d[i][0]+"</option>";
+    }else{
+      r += "<option value='"+d[i][1]+"'>"+d[i][0]+"</option>";
+    }
+  }
+  r += "</select>";
+  return r;
+}
+/*******************************************************
+
+
+	
+*******************************************************/
+function saveToDb(){
+  //return;
+  f_sls('g_ESP', g_au190);            //save it to local Db
+  g_au190 			    = f_gls('g_ESP');	//get the object
+  
+}
+
+/*******************************************************
+
+  Websocket Fc
+	
+*******************************************************/
+function _wsFc(){
+
+  try{
+
+    if(_wsSt(ws)){
+      return true;
+    }
+
+    //wsIp = 'ws://192.168.1.43:81/uc';
+    if('WebSocket' in window){
+      ws = new WebSocket(wsIp);
+      ws_prev_st = 9;
+    }else if('MozWebSocket' in window){
+      ws = new MozWebSocket(wsIp);
+      ws_prev_st = 9;
+    }else{
+      console.error('WebSocket is not supported by this browser.');
+      return false;
+    }
+    ws.onopen = function (){
+      showm(new Date().getDateFormat('hh:ii:ss') + ' Info: WebSocket connection opened.');
+    };
+    ws.onmessage = function(event){
+
+      if(_ev(event.data)){
+        showm(new Date().getDateFormat('hh:ii:ss') + ' --> ' + event.data);
+      }
+    };
+    ws.onclose = function(event){
+      showm(new Date().getDateFormat('hh:ii:ss') + ' Info: WebSocket connection closed, Code: ' + event.code + (event.reason == "" ? "" : ", Reason: " + event.reason));
+    };
+    
+  }catch(e){
+    console.error('_wsFc:' + e);
+  }
+  return true;
+}
+/*******************************************************
+
+  ret true if connected
+	
+*******************************************************/
+function _wsSt(ws){
+  try{
+    
+    if(ws != null){
+      
+      if(ws.readyState != ws_prev_st){
+        //console.log('--> _wsSt: ' + ws.readyState );
+        ws_prev_st   = ws.readyState;
+        var el  = document.getElementById('ws_st');
+        if(ws.readyState === WebSocket.OPEN){
+          el.classList.remove('err');
+          if(g_au190.lm == ''){
+            g_au190.lm = 'home';
+          }
+          _ck(g_au190.lm);//load last menu
+          return true;
+        }else{
+          el.classList.add('err');
+          console.error('_wsSt: ' + ws.readyState);
+          ws_err++;
+          return false;
+        }
+      }else if(ws.readyState === WebSocket.OPEN){
+        ws_err = 0;
+        return true;
+      }
+      
+    }
+    return false;
+    
+  }catch(e){
+    console.error('_wsSt:' + e);
+  }
+}
+/*******************************************************
+
+	
+*******************************************************/
+function _wsSend(m){
+  try{
+    if(ws != null){
+      if(ws.readyState === WebSocket.OPEN){
+        //console.log('--> _wsSend: ' + m );
+        ws.send(m);
+      }else if(ws != null){
+        ws.close();
+        ws = null;
+        cl_1('wr_0');
+        //location.reload();
+      }
+    }
+  }catch(e){
+    console.error('_wsSend:' + e);
+  }
+}
+/*******************************************************
+
+	
+*******************************************************/
+function cc_s(s, t){
+ 
+  return s + t;
+}
+/*******************************************************
+
+  Event from ws
+	
+*******************************************************/
+function _ev(e){
+  try{
+    
+    var ret = true;
+    //console.log(e);
+    var o = JSON.parse(e);
+    if(typeof o === 'object' && o !== null){
+      
+      var el;
+      //console.log('--> _ev: ');
+      //console.log(o);
+      var tp = '';
+      if(o['topic']){
+        const a = o['topic'].split('/');
+        if(a.length == 3){
+          tp  = a[2];
+          g_au190[tp] = o;
+        }
+      }
+      
+      if(o['fsys']){//
+      
+        el = document.getElementById('fs');
+        el.innerHTML = Object.keys(o.fsys).map(idx => `
+          <div class='m1'>
+            <div class='c1'>${(parseInt(idx) + 1)}.  ${o.fsys[idx].n}</div>
+            <div class='c1'>${new Date(o.fsys[idx].t*1000).getDateFormat("yyyy-mm-dd hh:ii:ss")}</div>
+            <div><button id='fsysdel_${o.fsys[idx].n}' class="bred ck_id">Delete</button></div>
+          </div>
+        `).join('');
+        
+      }else if(o['esp'] == "EspRestart"){
+
+        ws.close();
+        ws = null;
+        cl_1('wr_0');
+        
+      }else if(o['o_0']){
+        
+        el = document.getElementById('wr_4');
+        var x1 ="<table><tr><th colspan='2'>GPIO Config</th></tr>";
+        
+         Object.keys(o).map(idx => {
+          try{
+
+            let i = idx.split('_')[1];
+            
+            if(i < 17){
+              if(i == 1){
+                x1 += "<tr><td>GPIO"+i+" (Tx)</td><td>"+ccb(idx, gpio, o[idx])+"</td></tr>";
+              }else if(i == 2){
+                x1 += "<tr><td>GPIO"+i+" (Led_i)</td><td>"+ccb(idx, gpio, o[idx])+"</td></tr>";
+              }else if(i == 3){
+                x1 += "<tr><td>GPIO"+i+" (Rx)</td><td>"+ccb(idx, gpio, o[idx])+"</td></tr>";
+              }else{
+                x1 += "<tr><td>GPIO"+i+"</td><td>"+ccb(idx, gpio, o[idx])+"</td></tr>";
+              }
+            }else{
+              x1 += "<tr><td>A0</td><td>"+ccb(idx, a0, o[idx])+"</td></tr>";
+            }
+           }catch{}
+        }); 
+        
+        el.innerHTML = x1 + "<tr><th colspan='2'><button id='s_io' class='on ck'>Save</button></th></tr>";
+        
+      }else if(o['i']){
+
+        Object.keys(o).map(idx => {
+          try{
+            if(idx == 's'){
+              document.getElementById('i_' + idx).innerHTML = cc_s(o[idx], ' (' + o['r'] + '%)');
+            }else if(idx == '9'){
+              document.getElementById('i_' + idx).innerHTML = cc_s(o[idx], ('/' + o['3'].replace("-dev", "")));
+            }else if(idx == 'd' || idx == 'e' || idx == 'f' || idx == 'g' || idx == 'h'){
+              document.getElementById('i_' + idx).innerHTML = cc_s(parseInt(o[idx]/1024), ' kB');
+            }else if(idx == 'k'){
+              document.getElementById('i_' + idx).innerHTML = cc_s((o[idx]/1000000), ' MHz');
+            }else{
+              document.getElementById('i_' + idx).innerHTML = o[idx];
+            }
+           }catch{}
+        }); 
+
+      }else if(tp.substring(0, 2) == 'md'){
+        
+        var idx = tp.substring(2, tp.length);
+        el = document.getElementById('md_' + idx);
+        el.innerHTML = o['msg'];
+              
+      }else if(tp.substring(0, 5) == 'POWER'){
+        
+        var idx = tp.substring(5, tp.length);
+        el = document.getElementById('POWER_' + idx);
+        el.removeAttribute('class');
+        el.classList.add('ck_id');
+        el.classList.add(g_au190['POWER' + idx].msg);
+        
+      }else if(tp == 'RESULT'){
+
+        Object.keys(o).map(idx => {
+          try{
+            if(idx.substring(0, 6) == 'Dimmer'){
+              
+              var i = idx.substring(6, idx.length);
+              document.getElementById('Dimmer_' + i).value = o[idx];
+              
+            }
+
+           }catch{}
+        }); 
+        
+      }else if(tp == 'STATE'){
+        
+        var x1 ="<table>";
+        var sw ="<div class='m'>";
+        var di ="";
+        var x2 ="";
+        
+        Object.keys(o).map(idx => {
+          try{
+            
+            if(idx == 'topic'){
+              x1 += "<tr><td>Topic</td><td>"+o[idx]+"</td></tr>";
+            }else if(idx == 'Time'){
+              x1 += "<tr><td>"+idx+"</td><td>"+o[idx]+"</td></tr>";
+            }else if(idx == 'Uptime'){
+              x1 += "<tr><td>"+idx+"</td><td>"+o[idx]+"</td></tr>";
+            }else if(idx == 'SSId'){
+              x1 += "<tr><td>SSID (RSSI)</td><td>"+o['SSId']+" ("+o['RSSI']+"%)</td></tr>";
+            }else if(idx == 'Temperature'){
+              x1 += "<tr><td>"+idx+"</td><td>"+o[idx]+" &#8451;</td></tr>";
+            }else if(idx == 'Humidity'){
+              x1 += "<tr><td>"+idx+"</td><td>"+o[idx]+" %</td></tr>";
+            }else if(idx == 'Pressure'){
+              x1 += "<tr><td>"+idx+"</td><td>"+o[idx]+" hPa</td></tr>";
+            }else if(idx == 'Illuminance'){
+              x1 += "<tr><td>Illuminance</td><td>"+o[idx]+" lux</td></tr>";
+            }else if(idx == 'A0'){
+              x1 += "<tr><td>Analog</td><td>"+o[idx]+"</td></tr>";
+            }else if(idx.substring(0, 2) == 'md'){
+              var x = idx.substring(2, idx.length);
+              x1 += "<tr><td>Motion</td><td id='md_"+x+"'>"+o[idx]+"</td></tr>";
+            }else if(idx.substring(0, 5) == 'POWER'){
+              
+              var x = idx.substring(5, idx.length);
+              var i = 'Dimmer' + x;
+              if(o[i]){
+                sw += "<button id='POWER_"+x+"' class='ck_id "+o[idx]+"'>"+idx+"</button>";
+                //di += "<div class='m'><div>"+i+"</div><div class='err'><input type='range' min='1' max='100' value='"+o[i]+"' class='ch_id' id='Dimmer_"+x+"'></div><div id='Dimmerp_"+x+"'>"+o[i]+" %</div></div>";
+                di += "<div class='sl'><input type='range' min='1' max='100' value='"+o[i]+"' class='ch_id' id='Dimmer_"+x+"'></div>";
+              }else{
+                sw += "<button id='POWER_"+x+"' class='ck_id "+o[idx]+"'>"+idx+"</button>";
+              }
+            }else if(idx == 'PMS5003'){
+              
+              x2 = "<tr><th colspan='2'>"+idx+"</th>";
+              Object.keys(o[idx]).map(i => {
+                try{
+                  x2 += "<tr><td>"+i+"</td><td>"+o[idx][i]+"</td></tr>";
+                }catch{}
+              });
+              
+            }
+
+           }catch{}
+        }); 
+        
+        document.getElementById('l1').innerHTML = di;
+        document.getElementById('l2').innerHTML = sw + "</div>";
+        document.getElementById('l3').innerHTML = x1 + x2;
+     
+      }else if(o['c_1']){
+
+        ret = false;
+        Object.keys(o).map(idx => {
+          try{
+            document.getElementById(idx).value = o[idx];
+          }catch{}
+        }); 
+      }
+
+    }
+
+  }catch(e){
+  }
+  return ret;
+}
+/*******************************************************
+
+  Event form dialog
+  e - event object
+  p - type of event click, change ....
+  
+*******************************************************/
+function _cke(e, p){
+
+  //console.log(e);
+  if(e.classList.contains('ck') || e.classList.contains('ck_id') || p == 2 && e.classList.contains('ch_id')){
+    
+    //console.log('--> _cke: [' + p + '][' + e.id + '] ' + e.className);
+
+    var f = e.id;
+    var id = '';
+    if(e.classList.contains('ck_id') || e.classList.contains('ch_id')){//has more info
+    
+      const a = e.id.split('_');
+      if(a.length == 2){
+        f   = a[0];
+        id  = a[1];
+      }
+    }
+    _ck(f, id, e);
+  }
+}
+/*******************************************************
+
+  Event form ck
+
+*******************************************************/
+function _ck(f, id, e){
+
+  //console.log('--> _ck: [' + f + '][' + id + ']');
+  
+  if(f == 'ws_st'){
+    
+    if(ws != null){
+      //ws.close();
+      //ws = null;
+      cl_1('wr_0');
+      location.reload();
+    }
+      
+  }else if(f == 'smsg'){
+
+    if(ws != null){
+      var m = document.getElementById('tmsg').value;
+      g_au190.lmsg = m;
+      showm(new Date().getDateFormat('hh:ii:ss') + ' <-- ' + m, 1);
+      _wsSend(m);
+    }else{
+      console.error('WebSocket connection not established, please connect.');
+    }
+    
+  }else if(f == 'home'){
+    
+    cl_1('wr_1');
+    g_au190.lm = f;
+    _wsSend('cmnd/ws/state');
+    //showm(new Date().getDateFormat('hh:ii:ss') + ' --> win [' + window.innerWidth + 'x' + window.innerHeight + ']');
+    
+  }else if(f == 'info'){
+
+    cl_1('wr_2');
+    g_au190.lm = f;
+    _wsSend('cmnd/ws/info');
+    
+  }else if(f == 'config'){
+
+    cl_1('wr_3');
+    g_au190.lm = f;
+    _wsSend('cmnd/ws/config');
+    
+  }else if(f == 'gpio'){
+
+    cl_1('wr_4');
+    document.getElementById("m_menu").style.display = "none";
+    g_au190.lm = f;
+    _wsSend('cmnd/ws/config_gpio {"get_config":"0"}');
+  
+  }else if(f == 's_io'){
+
+    _wsSend('cmnd/ws/config_gpio {"o_0":' + document.getElementById("o_0").value + ',"o_1":' + document.getElementById("o_1").value + ',"o_2":' + document.getElementById("o_2").value + ',"o_3":' + document.getElementById("o_3").value + ',"o_4":' + document.getElementById("o_4").value + ',"o_5":' + document.getElementById("o_5").value + ',"o_12":' + document.getElementById("o_12").value + ',"o_13":' + document.getElementById("o_13").value + ',"o_14":' + document.getElementById("o_14").value + ',"o_15":' + document.getElementById("o_15").value + ',"o_16":' + document.getElementById("o_16").value + ',"o_17":' + document.getElementById("o_17").value + '}');
+    cl_1('wr_0');
+    
+  }else if(f == 'mfs'){
+    
+    cl_1('wr_5');
+    document.getElementById("m_menu").style.display = "none";
+    g_au190.lm = f;
+    _wsSend('cmnd/ws/w {"fsys":"1"}');
+    
+  }else if(f == 'debug'){
+
+    cl_1('wr_6');
+    document.getElementById("m_menu").style.display = "none";
+    var el = document.getElementById('l_w');
+    el.scrollTop = el.scrollHeight;
+    g_au190.lm = f;
+    
+  }else if(f == 'about'){
+
+    document.getElementById("m_menu").style.display = "none";
+
+  }else if(f == 'help'){
+
+    cl_1('wr_7');
+    document.getElementById("m_menu").style.display = "none";
+    g_au190.lm = f;
+    
+  }else if(f == 'fsysdel'){
+
+    _wsSend('cmnd/ws/w {"fsysdel":"' + id + '"}');
+    
+    
+  }else if(f == 'confsave'){
+
+    _wsSend('cmnd/ws/w {"confsave":"' + document.getElementById("c_1").value + '","c_2":"' + document.getElementById("c_2").value + '","c_3":"' + document.getElementById("c_3").value + '","c_4":"' + document.getElementById("c_4").value + '","c_5":"' + document.getElementById("c_5").value + '","c_6":"' + document.getElementById("c_6").value + '"}');
+    cl_1('wr_0');
+    
+  }else if(f == 'm_o'){
+    
+    document.getElementById("m_menu").style.display = "block";
+    
+  }else if(f == 'm_c'){
+    
+    document.getElementById("m_menu").style.display = "none";
+
+  }else if(f == 'backup'){
+    
+    document.getElementById("m_menu").style.display = "none";
+
+  }else if(f == 'co_1'){
+    
+    
+  }else if(f == 'co_2'){
+    
+    
+   }else if(f == 'rb'){
+     
+    g_au190.dr_fc = fRb(i);
+    
+    
+  }else if(f == 'co_3'){
+    
+    document.getElementById("tmsg").value = e.options[e.selectedIndex].value;
+    
+  }else if(f == 'clear'){
+    
+    document.getElementById("l_w").innerHTML = '';
+    
+  }else if(f == 'POWER'){
+    
+    el = document.getElementById('POWER_' + id);
+    
+    if(el.classList.contains('ON')){
+      _wsSend('cmnd/ws/POWER' + id + ' OFF');
+    }else{
+      _wsSend('cmnd/ws/POWER' + id + ' ON');
+    }
+
+  }else if(f == 'Dimmer'){
+    
+    _wsSend('cmnd/ws/Dimmer' + id + ' '+ document.getElementById('Dimmer_' + id).value);
+    
+  }else{
+    console.error('_ck Unknown: ' + f);
+  }
+
+  saveToDb();// Save Obj to local Db
+}
+
+/*******************************************************
+
+  
+	
+*******************************************************/
+function showm(m,x){
+  
+  var el = document.getElementById('l_w');
+  el.innerHTML += m + '\n';
+  
+  if(wsc){
+    el.scrollTop = el.scrollHeight;
+  }
+}
+
+
+/************************************************************************************************************************************************************************************
+
+	--> main
+
+************************************************************************************************************************************************************************************/
+function main(){
+
+  //console.log('--> main');
+
+  /*******************************************************
+
+	Init local storage
+  
+  *******************************************************/
+  if(localStorage.getItem('g_ESP') === null){
+    saveToDb();// Save Obj to local Db
+  }
+  var t 			= f_gls('g_ESP');	//get the object
+  if(t != ""){
+    g_au190 = t;
+  }
+  wsIp = 'ws://' + location.hostname + ':81/uc';
+  //console.log(g_au190);
+  _pc();//ezt nem szabad máshová tenni mert akkor nem töldtodik be minden jól
+
+  
+  /*******************************************************
+
+	Event listeners
+  
+  *******************************************************/
+  document.addEventListener('click', function (e){
+     
+    if(document.getElementById('l_w').contains(e.target)){
+      wsc = 0;
+    }else{
+      wsc = 1;
+    }
+    
+    if(e.target){
+      _cke(e.target, 1);
+    }
+    
+  });
+
+  document.addEventListener('change', function(e){
+    if(e.target){
+      _cke(e.target, 2);
+    }
+  });
+  
+  /*******************************************************
+
+	Main Fc
+  
+  *******************************************************/
+  
+  const elements = document.querySelectorAll('.ver');
+  elements.forEach(element => {
+    element.innerHTML = _ver;
+  });
+
+  //document.getElementById("s1").innerHTML = g_au190.xy_zoom + "," + g_au190.xz_0 + "," + g_au190.xz_1;
+
+  document.getElementById("tmsg").value = g_au190.lmsg;
+}
+/*******************************************************
+
+  Process allways running
+
+*******************************************************/
+var _pc = function(){
+	
+	try{
+    //console.log('g_pc:' + g_pc + ' ' + ws_err);
+    
+    _wsFc();
+    
+    let t_out = 1000;
+    if(ws_err > 3){
+      t_out = 5000;
+    }
+    _pss = setTimeout(_pc, t_out);
+    g_pc ++;
+    
+	}catch(e){ console.error('_pc:' + g_pc + " " + e);}
+};
+
+    </script>
+    <style>
+
+body
+{
+margin: 0 0 0 0;
+width:100%;
+height:100%;
+}
+
+input,select
+{
+padding:3px;font-size:1em;
+}
+
+p
+{
+margin:0.5em 0;
+}
+
+form
+{
+padding:16px 8px;
+}
+
+input{width:100%;box-sizing:border-box;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;}
+input[type=checkbox],input[type=radio]{width:1em;margin-right:6px;vertical-align:-1px;}
+input[type=range]{width:99%;margin: 5px 2px 5px 2px;}
+select{width:100%;}
+textarea{resize:none;width:99%;height:380px;padding:5px;overflow:auto;}
+
+button,.on,.bred
+{
+margin: 5px 2px 5px 2px;
+border:0;
+border-radius:0.3rem;
+background:#808080;
+color:#faffff;
+line-height:2.4rem;
+font-size:1.2rem;
+min-width:124px;
+max-width:200px;
+cursor:pointer;
+}
+
+button:hover{background:#707070;}
+.bred{background:#d43535;}
+.bred:hover{background:#931f1f;}
+.err{background:#d43535;border-radius:0.3rem;cursor:pointer;}
+
+.wr_m{
+  padding: 0px 12px;
+  max-height: calc(100vh - 52px);
+	overflow: auto;
+}
+
+.m, .m1
+{
+display: flex;
+flex-flow: row wrap;
+justify-content: space-around;
+align-items: center;
+align-content: center;
+}
+
+.m1
+{
+justify-content: space-between;
+}
+
+.sl{
+  border-radius:0.3em;
+	padding:2px;
+	background:#f5f5f5;
+	margin: 0px 0px 5px 0px;
+}
+
+.h_w{
+	display: none;
+}
+.s
+{
+padding: 8px 0px 8px 0px;
+}
+
+table{
+  border-collapse: collapse;
+  width: 100%; 
+  font-size: 14px;
+} 
+th, td{
+  padding: 5px;
+  text-align: left;
+  border-bottom: 1px solid #f5f5f5; 
+  width: 50%; 
+} 
+th{
+  text-align: center;
+  padding: 11px; 
+} 
+
+.on,.ON,.true
+{
+background: #47c266;
+}
+.on:hover,.ON:hover{background:#5aaf6f;}
+
+.off,.OFF,.false
+{
+--color: #808080;
+}
+
+/* Menu */
+
+.menu
+{
+  background-color: #3e4647;
+  text-align: center;
+  width: 100%;
+	height: 52px;
+  padding:0px;
+}
+.menu a{
+  display: inline-block;
+  color: white;
+  padding: 18px 16px 18px 16px;
+  text-decoration: none;
+  line-height: 1;
+ }
+.menu a:hover,.menu a:active
+{
+  background-color: #777;
+}
+
+.menu1{
+  height: 100%;
+  width: 100%;
+	display: none;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: rgba(0,0,0, 0.9);
+  overflow-y: scroll;
+  text-align: center;
+}
+.menu1 a{
+  padding: 8px;
+  text-decoration: none;
+  font-size: 21px;
+  color: #818181;
+  display: block;
+}
+.menu1 a:hover{
+  color: #f1f1f1;
+}
+#m_c{
+  padding: 4px 20px 0 0;
+  text-align: right;
+  font-size: 36px;
+}
+
+@media screen and (min-width: 650px)
+{
+	#wr_1,#wr_2,#wr_3,#wr_4,#wr_5,#wr_7
+	{
+  max-width: 480px;
+  margin: auto;
+  width: 50%;
+	}
+}
+
+    </style>
+  </head>
+  <body onload='main()'>
+  <div class='menu'>
+    <a href='javascript:void(0)' id='ws_st' class='ck'>&#10070;</a>
+    <a href='javascript:void(0)' id='home' class='ck'>Home</a>
+    <a href='javascript:void(0)' id='info' class='ck'>Info</a>
+    <a href='javascript:void(0)' id='config' class='ck'>Config</a>
+    <a href='javascript:void(0)' id='m_o' class='ck'>&#9776;</a>
+  </div>
+  <div class='menu1' id='m_menu'>
+    <a href='javascript:void(0)' id='m_c' class='ck'>&times;</a>
+    <a href='javascript:void(0)' id='gpio' class='ck'>GPIO Config</a>
+    <a href='javascript:void(0)' id='mfs' class='ck'>File System</a>
+    <a href='javascript:void(0)' id='debug' class='ck'>Debug</a>
+    <a href='javascript:void(0)' id='help' class='ck'>Help</a>
+  </div>
+
+  <div class='wr_m'>
+
+   <!-- wr_gpio -->
+    <div id='wr_0' class='wr h_w'>
+      <div class="m s"><button class="bred">Conecting to myEsp</button></div>
+    </div>
+    
+    <!-- wr_home -->
+    <div id='wr_1' class='wr h_w'>
+      <div id='l1' class='s'></div>
+      <div id='l2'></div>
+      <div id='l3' class='s'></div>
+      <div style="text-align:right;font-size:11px;"><hr><a href="https://github.com/au190/au190_myEsp" target="_blank" style="color:#aaa;text-decoration:none;"><div class='ver'></div></a></div>
+    </div>
+    
+    <!-- wr_info -->
+    <div id='wr_2' class='wr h_w'>
+      <table>
+        <tr><th colspan='2'>Info</th></tr>
+        <tr><td>Time</td><td id='i_t'></td></tr>
+        <tr><td>SSID (RSSI)</td><td id='i_s'></td></tr>
+        <tr><td>Uptime</td><td id='i_u'></td></tr>
+        <tr><td>MQTT User</td><td id='i_6'></td></tr>
+        <tr><td>MQTT Topic</td><td id='i_7'></td></tr>
+        <tr><th colspan='2'>Info1</th></tr>
+        <tr><td>Version</td><td id='i_v'></td></tr>
+        <tr><td>Core/SDK Version</td><td id='i_9'></td></tr>
+        <tr><td>ESP Chip Id</td><td id='i_b'></td></tr>
+        <tr><td>Flash Chip Id</td><td id='i_c'></td></tr>
+        <tr><td>Flash Size</td><td id='i_d'></td></tr>
+        <tr><td>Program Flash Size</td><td id='i_e'></td></tr>
+        <tr><td>Program Size</td><td id='i_f'></td></tr>
+        <tr><td>Free Program Space</td><td id='i_g'></td></tr>
+        <tr><td>Free Memory</td><td id='i_h'></td></tr>
+        <tr><td>MAC Address</td><td id='i_m'></td></tr>
+        <tr><td>Chip Mode</td><td id='i_j'></td></tr>
+        <tr><td>Chip Speed</td><td id='i_k'></td></tr>
+      </table>
+    </div>
+    
+    <!-- wr_config -->
+    <div id='wr_3' class='wr h_w'>
+      <table>
+        <tr><th colspan='2'>Config</th></tr>
+        <tr><td>Wifi name:</td><td><input id='c_1' type='text' value=''></td></tr>
+        <tr><td>Wifi pw:</td><td><input id='c_2' type='password' value=''></td></tr>
+        <tr><td>MQTT Server:</td><td><input id='c_3' type='text' value=''></td></tr>
+        <tr><td>MQTT user:</td><td><input id='c_4' type='text' value=''></td></tr>
+        <tr><td>MQTT pw:</td><td><input id='c_5' type='password' value=''></td></tr>
+        <tr><td>MQTT Topic:</td><td><input id='c_6' type='text' value=''></td></tr>
+        <tr><th colspan='2'><button id='confsave' class='on ck'>Save</button></th></tr>
+      </table>
+    </div>
+    
+    <!-- wr_gpio -->
+    <div id='wr_4' class='wr h_w'>
+    </div>
+    
+    <!-- wr_fs -->
+    <div id='wr_5' class='wr h_w'>
+      <form action='/upload' method='post' enctype='multipart/form-data' class='m'>
+        <input type='file' name='name'>
+        <input class='on' type='submit' value='Upload'>
+      </form>
+      <div class='m'>FileSyetem</div>
+      <div id='fs'></div>
+    </div>
+    
+    <!-- wr_debug -->
+    <div id='wr_6' class='wr h_w'>
+      <div class='s'>
+        <input id='tmsg'></input>
+      </div>
+      <div class='m'>
+        <select id='co_3' class='ck'>
+          <option value='cmnd/ws/state'>Get State</option>
+          <option value='cmnd/ws/Status 0'>Get Status</option>
+          <option value='cmnd/ws/POWER5 ON'>Power5 On</option>
+          <option value='cmnd/ws/POWER5 OFF'>Power5 Off</option>
+          <option value='cmnd/ws/Dimmer5 '>Dimmer5 </option>
+          <option value='cmnd/ws/PulseTime5 '>PulseTime5</option>
+          <option value='cmnd/ws/PulseTimeOn '>PulseTimeOn</option>
+          <option value='cmnd/ws/cpuspeed '>Cpu Speed (msec)</option>
+          <option value='cmnd/ws/TelePeriod '>Get TelePeriod</option>
+          <option value='cmnd/ws/tempoffset '>Temperature Offset</option>
+          <option value='cmnd/ws/I2Cscan '>I2C Scan</option>
+          <option value='cmnd/ws/config_gpio {"get_config":"0"}'>GPIO Config</option>
+          <option value='cmnd/ws/reboot'>Reboot</option>
+          <option value='cmnd/ws/state'>---</option>
+          <option value='cmnd/ws/rf_protocol_mask 18446744073709551615'>Get/Set RF protocol</option>
+          <option value='cmnd/ws/rf_scann {"buffer_size":512,"tolerance":50,"filter":350}'>RF scann</option>
+          <option value='cmnd/ws/rf_send {"data":18446744073709551615,"bits":24,"protocol":1,"pulse":350}'>Send RF msg</option>
+          <option value='cmnd/ws/state'>---</option>
+          <option value='cmnd/ws/color 255,0,0'>Ws2812B Color RGB</option>
+          <option value='cmnd/ws/bri '>Ws2812B Brightness</option>
+          <option value='cmnd/ws/effect Rainbow'>Ws2812B Effect</option>
+          <option value='cmnd/ws/maxpower '>Ws2812B Maxpower</option>
+          <option value='cmnd/ws/state'>---</option>
+          <option value='cmnd/ws/ar {"getConf":""}'>Ar Get Config</option>
+          <option value='cmnd/ws/ar {"resetPow":""}'>Ar Reset Power</option>
+          <option value='cmnd/ws/ar {"powThre":""}'>Ar Power threshold</option>
+          <option value='cmnd/ws/ar {"calib":""}'>Ar Power Calibration</option>
+          <option value='cmnd/ws/state'>---</option>
+          <option value='cmnd/ws/alarm {"c":"disarm","c1":"0","pw":""}'>Alarm</option>
+          <option value='cmnd/ws/state'>---</option>
+          <option value='cmnd/ws/pms5003_speed '>Pms5003 Speed</option>
+          <option value='cmnd/ws/state'>---</option>
+        </select>
+      </div>
+      <div class='m'>
+        <button id='smsg' class='ck'>Send message</button>
+      </div>
+      <div class='m'>
+        <textarea readonly id='l_w' wrap='off' name='t1'></textarea>
+      </div>
+      <div class='m'>
+        <button id='clear' class='ck'>Clear</button>
+      </div>
+    </div>
+    
+    <!-- wr_help -->
+    <div id='wr_7' class='wr h_w'>
+      <div class='m s'>
+        <a href="https://github.com/au190/au190_myEsp" target="_blank" class='ck'>Help page</a>
+      </div>
+      <div style="text-align:right;font-size:11px;"><hr><a href="https://github.com/au190/au190_myEsp" target="_blank" style="color:#aaa;text-decoration:none;"><div class='ver'></div></a></div>
+    </div>
+    
+  </div>
+  </body>
+</html>
