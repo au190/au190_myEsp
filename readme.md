@@ -66,11 +66,11 @@ Blink:
     - GPIO pin set as input and GPIO_16 is pulled to LOW internally and GPIO_0 --> GPIO_15 is pulled to HIGH internally.
     - Checks in every 50msec and send the status ON or OFF
   - Motion
-    - GPIO pin set as input and GPIO_16 is pulled to LOW internally and GPIO_0 --> GPIO_15 is pulled to HIGH internally.
+    - GPIO pin set as input. I must use resistance on the input (pull down resitor). The MD is active HIGH, and the output is 3.3 V.
     - Checks in every 50msec and send the status ON or OFF
-    - If the input is HIGH send the md message in every 10sec untl the input is HIGH.
+    - If the input is HIGH send the md message in every 10sec until the input is HIGH.
   - Motion_i
-    - GPIO pin set as input and GPIO_16 is pulled to LOW internally and GPIO_0 --> GPIO_15 is pulled to HIGH internally.
+    - GPIO pin set as input. I must use resistance on the input (pull up resitor). The MD is active HIGH, and the output is 3.3 V.
     - Checks in every 50msec and send the status ON or OFF
     - If the input is LOW send the md message in every 10sec untl the input is LOW.
   - Led_x
