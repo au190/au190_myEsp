@@ -98,26 +98,19 @@ tele
 ----------- Module configurations -----------
 *******************************************************
 Multisensor:
-cmnd/ws/config_gpio {"o_0":255,"o_1":255,"o_2":175,"o_3":255,"o_4":255,"o_5":6,"o_12":8,"o_13":9,"o_14":15,"o_15":255,"o_16":255,"o_17":81}
+{"o_0":255,"o_1":255,"o_2":175,"o_3":255,"o_4":255,"o_5":6,"o_12":8,"o_13":9,"o_14":15,"o_15":255,"o_16":255,"o_17":81}
 
 Irrigation:
-cmnd/ws/config_gpio {"o_0":12,"o_1":255,"o_2":255,"o_3":255,"o_4":4,"o_5":4,"o_12":4,"o_13":5,"o_14":4,"o_15":4,"o_16":255,"o_17":255}
+{"o_0":12,"o_1":255,"o_2":255,"o_3":255,"o_4":4,"o_5":4,"o_12":4,"o_13":5,"o_14":4,"o_15":4,"o_16":255,"o_17":255}
 
 MyPlug:
-cmnd/ws/config_gpio {"o_0":255,"o_1":255,"o_2":255,"o_3":255,"o_4":4,"o_5":154,"o_12":8,"o_13":9,"o_14":255,"o_15":255,"o_16":255,"o_17":255}
+{"o_0":255,"o_1":255,"o_2":255,"o_3":255,"o_4":4,"o_5":154,"o_12":8,"o_13":9,"o_14":255,"o_15":255,"o_16":255,"o_17":255}
 
 Wifi_Md
-cmnd/ws/config_gpio {"o_0":255,"o_1":255,"o_2":170,"o_3":0,"o_4":0,"o_5":0,"o_12":255,"o_13":255,"o_14":255,"o_15":255,"o_16":10,"o_17":0}
+{"o_0":255,"o_1":255,"o_2":170,"o_3":0,"o_4":0,"o_5":0,"o_12":255,"o_13":255,"o_14":255,"o_15":255,"o_16":10,"o_17":0}
 
 Multisensor PMS:
-cmnd/ws/config_gpio {"o_0":14,"o_1":255,"o_2":175,"o_3":255,"o_4":13,"o_5":6,"o_12":8,"o_13":9,"o_14":15,"o_15":255,"o_16":255,"o_17":81}
-
-Multisensor living room:
-cmnd/ws/config_gpio {"o_0":255,"o_1":255,"o_2":175,"o_3":255,"o_4":17,"o_5":6,"o_12":8,"o_13":9,"o_14":15,"o_15":255,"o_16":255,"o_17":80}
-cmnd/ws/rf_protocol_mask 1
-
-
-
+{"o_0":14,"o_1":255,"o_2":175,"o_3":255,"o_4":13,"o_5":6,"o_12":8,"o_13":9,"o_14":15,"o_15":255,"o_16":255,"o_17":81}
 
 -----------   Just for test   -----------
 cmnd/ws/in {"test":"","t1":100,"t2":4294967100}
@@ -145,12 +138,8 @@ cmnd/ws/tempoffset -2.6
 -----------   Get I2Cscan   -----------
 cmnd/ws/I2Cscan
 
------------   Get Set GPIO Config   -----------
-Get the config:
-cmnd/ws/config_gpio {"get_config":"0"}
-
-Set the config:
-cmnd/ws/config_gpio {"o_0":14,"o_1":255,"o_2":175,"o_3":255,"o_4":13,"o_5":6,"o_12":8,"o_13":9,"o_14":15,"o_15":255,"o_16":255,"o_17":81}
+-----------   Get Webpage GPIO Config   -----------
+cmnd/ws/config_gpio
 
 -----------   Reboot ESP   -----------
 cmnd/ws/reboot
@@ -240,6 +229,17 @@ Dimmer led with PWM 1 - 100%
 
 cmnd/ws/Dimmer1
 cmnd/ws/Dimmer1 50
+
+
+-----------   PWMIR   -----------
+Command can be (PWMIR0 -> PWMIR16)
+PWMIR PWM for Irrigation. For the first 1 sec the PWM is set to 100 then it swiched to the percent specified in the command.
+PWM = 1 - 100%
+
+cmnd/ws/PWMIR1
+cmnd/ws/PWMIR1 50
+
+
 *******************************************************
 -----------   TASMOTA compatibile commands  -----------
 *******************************************************
@@ -386,23 +386,33 @@ xtime;time
 -----------   Just for ARDUINO -----------
 *******************************************************
 
-*******************************************************/
+
+
 
 *******************************************************
 -----------   Upload the the firmware in different way -----------
 *******************************************************
+Esp upload:
 
-*******************************************************/
 
-python d:\G_Drive\MySoft\IHome\Ha\ota\espota_manual.py -i 192.168.1.4 -p 8266 --auth= -f d:\uC\myEsp\myEsp\myEsp.ino.generic.bin
+python3 /home/ha/ota/espota_manual.py -i 192.168.1.5 -f /home/ha/ota/myEsp_v29.bin
 
+python.exe d:\G_Drive\MySoft\IHome\Ha\ota\espota_manual.py -i 192.168.2.5 -f d:\Github\au190_myEsp\myEsp_v29.bin
 
 C:\Users\admin\Documents\ArduinoData\packages\esp8266\tools\python3\3.7.2-post1/python3 C:\Users\admin\Documents\ArduinoData\packages\esp8266\hardware\esp8266\2.7.4/tools/upload.py --chip esp8266 --port COM4 --baud 115200 --before default_reset --after hard_reset write_flash 0x0 d:\uC\myEsp\myEsp\myEsp.ino.generic.bin
 C:\Users\admin\Documents\ArduinoData\packages\esp8266\tools\python3\3.7.2-post1/python3 C:\Users\admin\Documents\ArduinoData\packages\esp8266\hardware\esp8266\2.7.4/tools/upload.py --chip esp8266 --port COM4 --baud 115200 erase_flash --before default_reset --after hard_reset write_flash 0x0 d:\uC\myEsp\myEsp\myEsp.ino.generic.bin
 
 
 
-c:\Program Files\Python37\python.exe" d:\G_Drive\MySoft\IHome\Ha\ota\ard_ota\ard_ota.py -i 192.168.1.8 -f d:\uC\myEsp\a1_lawnmower\a1_lawnmower.ino.eightanaloginputs.hex
+Arduino upload:
+"c:\Program Files\Python37\python.exe" d:\G_Drive\MySoft\IHome\Ha\ota\ard_ota\ard_ota.py -i 192.168.1.5 -f d:\GDrive\MySoft\IHome\Ha\ota\ard_ota\a_irrig.ino.eightanaloginputs_v3.hex
+"c:\Program Files\Python37\python.exe" d:\G_Drive\MySoft\IHome\Ha\ota\ard_ota\ard_ota.py -i 192.168.1.5 -f d:\uC\myEsp\a1_lawnmower\a1_lawnmower.ino.eightanaloginputs.hex
+
+
+
+
+
+
+
 
 ```
-
