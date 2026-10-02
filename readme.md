@@ -39,6 +39,14 @@ Blink:
 1.  Same as myEsp just GPIO4 is the output for WS2812B - do not use this pin for other config !!!
 
 
+*******************************************************
+### Timeout Logic.
+1.	Set up the wifi.
+2.	Before using this logic, must start with internet to save the time.
+3.	Restarting the device without the internet, the device is using its own clock.
+4.	After 1 minute the device is checking the time and setting the output (0 or 1) and the timeout.
+5.	If the time is equal to set time the device is swich ON with timeout.
+
 
 *******************************************************
 ### myEsp
@@ -101,7 +109,8 @@ Multisensor:
 {"o_0":255,"o_1":255,"o_2":175,"o_3":255,"o_4":255,"o_5":6,"o_12":8,"o_13":9,"o_14":15,"o_15":255,"o_16":255,"o_17":81}
 
 Irrigation:
-{"o_0":12,"o_1":255,"o_2":255,"o_3":255,"o_4":4,"o_5":4,"o_12":4,"o_13":5,"o_14":4,"o_15":4,"o_16":255,"o_17":255}
+{"o_0":12,"o_1":255,"o_2":255,"o_3":255,"o_4":4,"o_5":4,"o_12":4,"o_13":5,"o_14":4,"o_15":4,"o_16":255,"o_17":255} -- old
+{"o_0":12,"o_1":255,"o_2":255,"o_3":255,"o_4":6,"o_5":6,"o_12":6,"o_13":5,"o_14":6,"o_15":6,"o_16":255,"o_17":255}
 
 MyPlug:
 {"o_0":255,"o_1":255,"o_2":255,"o_3":255,"o_4":4,"o_5":154,"o_12":8,"o_13":9,"o_14":255,"o_15":255,"o_16":255,"o_17":255}
@@ -394,8 +403,7 @@ xtime;time
 *******************************************************
 Esp upload:
 
-
-python3 /home/ha/ota/espota_manual.py -i 192.168.1.5 -f /home/ha/ota/myEsp_v29.bin
+python3 /home/ha/ota/espota_manual.py -i 192.168.1.5 -f /home/ha/ota/myEsp_v30.bin
 
 python.exe d:\G_Drive\MySoft\IHome\Ha\ota\espota_manual.py -i 192.168.2.5 -f d:\Github\au190_myEsp\myEsp_v29.bin
 
@@ -405,6 +413,7 @@ C:\Users\admin\Documents\ArduinoData\packages\esp8266\tools\python3\3.7.2-post1/
 
 
 Arduino upload:
+
 "c:\Program Files\Python37\python.exe" d:\G_Drive\MySoft\IHome\Ha\ota\ard_ota\ard_ota.py -i 192.168.1.5 -f d:\GDrive\MySoft\IHome\Ha\ota\ard_ota\a_irrig.ino.eightanaloginputs_v3.hex
 "c:\Program Files\Python37\python.exe" d:\G_Drive\MySoft\IHome\Ha\ota\ard_ota\ard_ota.py -i 192.168.1.5 -f d:\uC\myEsp\a1_lawnmower\a1_lawnmower.ino.eightanaloginputs.hex
 
