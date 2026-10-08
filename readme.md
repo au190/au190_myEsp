@@ -1,3 +1,9 @@
+
+*******************************************************
+Upload the first html page.
+
+ http://ip/upload
+
 *******************************************************
 ### Wifi Md or Wifi button
 
@@ -42,10 +48,10 @@ Blink:
 *******************************************************
 ### Timeout Logic.
 1.	Set up the wifi.
-2.	Before using this logic, must start with internet to save the time.
+2.	Before using this logic, must start with internet to save the time. Device is getting the time from NTP server.
 3.	Restarting the device without the internet, the device is using its own clock.
-4.	After 1 minute the device is checking the time and setting the output (0 or 1) and the timeout.
-5.	If the time is equal to set time the device is swich ON with timeout.
+4.	After 1 minute the device is checking the time and swiching the output (ON or OFF) with timeout.
+5.	If the time is equal to set time the device is swiching ON with timeout.
 
 
 *******************************************************
@@ -54,7 +60,8 @@ Blink:
 
 1.  After the firmware upload GPIO2 (Led) set to status Led_i_0.
 2.  After the restart all the output set to OFF.
-3.  3x4 power cycle. Power the device on for 4 sec 3 times(exactly 3 power cycle !!!), on the 4 power cycle go in AP mode. Interval (ON > 4, OFF < 9) sec. Power cycle 4 reseting the PowerCycle to default.
+3.  4x4 power cycle. Power the device on for 4 sec 4 times (at cycle 4 do not power off !!!), on the 4 power cycle go in AP mode. Interval (ON > 4, OFF < 9) sec. Power cycle 4 reseting the PowerCycle to default. 
+4.	AP ip: http://192.168.4.1
 
 
 Blink:
@@ -121,6 +128,7 @@ Wifi_Md
 Multisensor PMS:
 {"o_0":14,"o_1":255,"o_2":175,"o_3":255,"o_4":13,"o_5":6,"o_12":8,"o_13":9,"o_14":15,"o_15":255,"o_16":255,"o_17":81}
 
+
 -----------   Just for test   -----------
 cmnd/ws/in {"test":"","t1":100,"t2":4294967100}
 
@@ -169,31 +177,36 @@ default: 50
 cmnd/ws/cpuspeed 50
 
 ----------- Set pms5003_speed  -----------
+Must be enabled in the code !
 Control sensor polling interval to extend lifetime (in minutes).
-Input 1 - 255
+Input: 1 - 255
 default: 30
 
 cmnd/ws/pms5003_speed 30
 
 
+-----------   GmtOffset   -----------
+GmtOffset - Set the local timezoe and DT.
+Input: 1 - 2
+default: GMT1
+
+cmnd/ws/GmtOffset
+cmnd/ws/GmtOffset 1
+
+-----------   PowerOnTime   -----------
+PowerOnTime - pin 			- (GPIO0 -> GPIO16) pin output. If 255 this future is disabled.
+						- time			- Switch ON at this hour:minute.
+						- timeOut		- Timeout is hour:minute. (00:01 - 18:00)
+						
+Turn ON the GPIO at this hour, for this timeout.
+
+cmnd/ws/PowerOnTime
+cmnd/ws/PowerOnTime {"pin":4,"time":"10:00","timeOut":"7:00"}
 
 *******************************************************
 -----------   TASMOTA compatibile commands  -----------
 *******************************************************
 All index represents the real GPIO pin number (POWER0 -> POWER16)
-
-
------------   Power   -----------
-Get - Set the Power status
-
-- Power can be 0, 1 ,ON, OFF, toggle
-- Command can be (POWER0 -> POWER16)
-- toggle = if power state is ON switch to OFF and vice versa
-
-cmnd/ws/POWER7
-cmnd/ws/POWER7 toggle
-cmnd/ws/POWER7 ON
-cmnd/ws/POWER7 OFF
 
 -----------   PulseTime   -----------
 Command can be (PulseTime0 -> PulseTime16) represents (POWER0 -> POWER16)
@@ -222,6 +235,19 @@ After this amount of time, the power will be turned OFF.
 
 cmnd/ws/PulseTime5
 cmnd/ws/PulseTime5 300
+
+-----------   Power   -----------
+Get - Set the Power status
+
+- If the PulseTime > 0 for the same Power it will applay aoutmaticaly! PulseTime=0 disable.
+- Power can be 0, 1 ,ON, OFF, toggle. 
+- Command can be (POWER0 -> POWER16)
+- toggle = if power state is ON switch to OFF and vice versa
+
+cmnd/ws/POWER7
+cmnd/ws/POWER7 toggle
+cmnd/ws/POWER7 ON
+cmnd/ws/POWER7 OFF
 
 -----------   TelePeriod   -----------
 How often sends the telemetry MQTT msg.
@@ -407,6 +433,7 @@ python3 /home/ha/ota/espota_manual.py -i 192.168.1.5 -f /home/ha/ota/myEsp_v30.b
 
 python.exe d:\G_Drive\MySoft\IHome\Ha\ota\espota_manual.py -i 192.168.2.5 -f d:\Github\au190_myEsp\myEsp_v29.bin
 
+Check the Arduino IDE logs where is the path for the upload.py.
 C:\Users\admin\Documents\ArduinoData\packages\esp8266\tools\python3\3.7.2-post1/python3 C:\Users\admin\Documents\ArduinoData\packages\esp8266\hardware\esp8266\2.7.4/tools/upload.py --chip esp8266 --port COM4 --baud 115200 --before default_reset --after hard_reset write_flash 0x0 d:\uC\myEsp\myEsp\myEsp.ino.generic.bin
 C:\Users\admin\Documents\ArduinoData\packages\esp8266\tools\python3\3.7.2-post1/python3 C:\Users\admin\Documents\ArduinoData\packages\esp8266\hardware\esp8266\2.7.4/tools/upload.py --chip esp8266 --port COM4 --baud 115200 erase_flash --before default_reset --after hard_reset write_flash 0x0 d:\uC\myEsp\myEsp\myEsp.ino.generic.bin
 

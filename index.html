@@ -11,13 +11,14 @@
 
 	
 */
-var _ver                  = 'ver[2024_01_24] by au190';
+var _ver                  = 'ver[2026_10_08] by au190';
 var ws                    = null;
 var wsc                   = 1;
 var wsIp                  = '';
 var ws_prev_st            = 9;    // Websocket previous state.
 var ws_err                = 0;    // Websocket error count.
 var g_topic               = '';
+var _save 								= '_g_ESP'; // Local save var name.
 var g_au190	= {
 
 	lm:                   '',                             //last menu clicked
@@ -79,12 +80,12 @@ var a0 = [
 ['Light (81)', 81],
 ];
 
-/************************************************************************************************************************************************************************************
+/***
 
 	--> Global Fc
 
-************************************************************************************************************************************************************************************/
-/*******************************************************
+***/
+/***
 
 	Prototype Get javascript date format dateformat
 	
@@ -100,7 +101,7 @@ var a0 = [
 
 	new Date().getDateFormat('hh:ii')
 	
-*******************************************************/
+***/
 Date.prototype.getDateFormat = function(f) {
 	
 	var yyyy 	= this.getFullYear().toString();
@@ -120,12 +121,12 @@ Date.prototype.getDateFormat = function(f) {
 
 	return f;
 };
-/*************************************************************************************
+/***
 	
 	-->	Get Url parameters
 	getVars
 	
-*************************************************************************************/
+***/
 function f_gvar(){
 	var vars 	= {};
 	var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
@@ -133,7 +134,7 @@ function f_gvar(){
 	});
 	return vars;
 }
-/*******************************************************
+/***
 
 	LocalStorage ha nincs ilyen name akkor létrehozza
 	
@@ -141,7 +142,7 @@ function f_gvar(){
 	n	- LocalStorage name
 	d	- If not set this name, set default value (d)
 	
-*******************************************************/
+***/
 function f_gls(n, d){
 	var ret = "";
 	try{
@@ -163,11 +164,11 @@ function f_gls(n, d){
 	//console.log('<-- f_gls: [' + n + '][' + localStorage.getItem(n) + '][' + ret + ']');
 	return ret;
 }
-/*******************************************************
+/***
 
 	Set Storage data
 
-*******************************************************/
+***/
 function f_sls(n, d){
 
 	if(typeof localStorage != 'undefined'){
@@ -176,11 +177,11 @@ function f_sls(n, d){
 		alert('No local storage here');
 	}
 }
-/*******************************************************
+/***
 
 	Delete Storage data
 	
-*******************************************************/
+***/
 function f_dls(n){
 
 	if(typeof localStorage != 'undefined'){
@@ -193,12 +194,12 @@ function f_dls(n){
 
 
 
-/************************************************************************************************************************************************************************************
+/***
 
 	--> Html Functions, socket Functions
 
-************************************************************************************************************************************************************************************/
-/*******************************************************
+***/
+/***
 
   Get or set radio button value
   
@@ -209,7 +210,7 @@ function f_dls(n){
   var x =  = fRb('rb')
   fRb('rb', g_au190.dr_fc);
 	
-*******************************************************/
+***/
 function fRb(n,v) {
   var i, r = document.getElementsByName(n);
   for(i = 0; i < r.length; i++){
@@ -226,21 +227,21 @@ function fRb(n,v) {
   }
   return '';
 }
-/*******************************************************
+/***
 
   Set value in Combo box
   co('co_1', g_au190.dr_color);
 	
-*******************************************************/
+***/
 function co(id, v){
   let e = document.getElementById(id);
   e.value = v;
 }
-/*******************************************************
+/***
 
   Update all class with the name
 	
-*******************************************************/
+***/
 function cl_1(s){
   var x = document.getElementsByClassName('wr');
   for(var i = 0; i < x.length; i++){
@@ -254,11 +255,11 @@ function cl_1(s){
     }
   }
 }
-/*******************************************************
+/***
 
   Create combo from matrix
 	
-*******************************************************/
+***/
 function ccb(id, d, s){
   
   var r = "<select id='"+id+"'>";
@@ -272,23 +273,22 @@ function ccb(id, d, s){
   r += "</select>";
   return r;
 }
-/*******************************************************
+/***
 
 
 	
-*******************************************************/
+***/
 function saveToDb(){
   //return;
-  f_sls('g_ESP', g_au190);            //save it to local Db
-  g_au190 			    = f_gls('g_ESP');	//get the object
-  
+  f_sls(_save, g_au190);   //save it to local Db
+  g_au190 = f_gls(_save);	//get the object
 }
 
-/*******************************************************
+/***
 
   Websocket Fc
 	
-*******************************************************/
+***/
 function _wsFc(){
 
   try{
@@ -326,11 +326,11 @@ function _wsFc(){
   }
   return true;
 }
-/*******************************************************
+/***
 
   ret true if connected
 	
-*******************************************************/
+***/
 function _wsSt(ws){
   try{
     
@@ -349,7 +349,7 @@ function _wsSt(ws){
           return true;
         }else{
           el.classList.add('err');
-          console.error('_wsSt: ' + ws.readyState);
+          //console.error('_wsSt: ' + ws.readyState);
           ws_err++;
           return false;
         }
@@ -365,10 +365,10 @@ function _wsSt(ws){
     console.error('_wsSt:' + e);
   }
 }
-/*******************************************************
+/***
 
 	
-*******************************************************/
+***/
 function _wsSend(m){
   try{
     if(ws != null){
@@ -386,19 +386,19 @@ function _wsSend(m){
     console.error('_wsSend:' + e);
   }
 }
-/*******************************************************
+/***
 
 	
-*******************************************************/
+***/
 function cc_s(s, t){
  
   return s + t;
 }
-/*******************************************************
+/***
 
   Event from ws
 	
-*******************************************************/
+***/
 function _ev(e){
   try{
     
@@ -586,13 +586,13 @@ function _ev(e){
   }
   return ret;
 }
-/*******************************************************
+/***
 
   Event form dialog
   e - event object
   p - type of event click, change ....
   
-*******************************************************/
+***/
 function _cke(e, p){
 
   //console.log(e);
@@ -613,11 +613,11 @@ function _cke(e, p){
     _ck(f, id, e);
   }
 }
-/*******************************************************
+/***
 
   Event form ck
 
-*******************************************************/
+***/
 function _ck(f, id, e){
 
   //console.log('--> _ck: [' + f + '][' + id + ']');
@@ -760,11 +760,11 @@ function _ck(f, id, e){
   saveToDb();// Save Obj to local Db
 }
 
-/*******************************************************
+/***
 
   
 	
-*******************************************************/
+***/
 function showm(m,x){
   
   var el = document.getElementById('l_w');
@@ -776,24 +776,23 @@ function showm(m,x){
 }
 
 
-/************************************************************************************************************************************************************************************
-
-	--> main
-
-************************************************************************************************************************************************************************************/
 function main(){
 
-  //console.log('--> main');
-
-  /*******************************************************
+	//_arg = f_arg();															// Must be the first fc.
+	//_save = '_g_' + _arg['usr'];
+	
+	//console.log(_arg);
+  /***
 
 	Init local storage
   
-  *******************************************************/
-  if(localStorage.getItem('g_ESP') === null){
+  ***/
+	
+	
+  if(localStorage.getItem(_save) === null){
     saveToDb();// Save Obj to local Db
   }
-  var t 			= f_gls('g_ESP');	//get the object
+  var t 			= f_gls(_save);	//get the object
   if(t != ""){
     g_au190 = t;
   }
@@ -802,11 +801,11 @@ function main(){
   _pc();//ezt nem szabad máshová tenni mert akkor nem töldtodik be minden jól
 
   
-  /*******************************************************
+  /***
 
 	Event listeners
   
-  *******************************************************/
+  ***/
   document.addEventListener('click', function (e){
      
     if(document.getElementById('l_w').contains(e.target)){
@@ -827,11 +826,11 @@ function main(){
     }
   });
   
-  /*******************************************************
+  /***
 
 	Main Fc
   
-  *******************************************************/
+  ***/
   
   const elements = document.querySelectorAll('.ver');
   elements.forEach(element => {
@@ -842,11 +841,11 @@ function main(){
 
   document.getElementById("tmsg").value = g_au190.lmsg;
 }
-/*******************************************************
+/***
 
   Process allways running
 
-*******************************************************/
+***/
 var _pc = function(){
 	
 	try{
@@ -1028,7 +1027,7 @@ background: #47c266;
 
 @media screen and (min-width: 650px)
 {
-	#wr_1,#wr_2,#wr_3,#wr_4,#wr_5,#wr_7
+	#wr_1,#wr_2,#wr_3,#wr_4,#wr_5
 	{
   max-width: 480px;
   margin: auto;
@@ -1120,6 +1119,8 @@ background: #47c266;
       </form>
       <div class='m'>FileSyetem</div>
       <div id='fs'></div>
+			
+			<button id="POWER_5" class="ck_id ON" onclick="window.location.href='/ota_update';">OTA Update</button>
     </div>
     
     <!-- wr_debug -->
@@ -1134,10 +1135,13 @@ background: #47c266;
           <option value='cmnd/ws/POWER5 ON'>Power5 On</option>
           <option value='cmnd/ws/POWER5 OFF'>Power5 Off</option>
           <option value='cmnd/ws/Dimmer5 '>Dimmer5 </option>
+					<option value='cmnd/ws/PWMIR5 '>PWMIR5 </option>
           <option value='cmnd/ws/PulseTime5 '>PulseTime5</option>
           <option value='cmnd/ws/PulseTimeOn '>PulseTimeOn</option>
+					<option value='cmnd/ws/PowerOnTime {"pin":4,"time":"10:00","timeOut":"7:00"}'>PowerOnTime</option>
           <option value='cmnd/ws/cpuspeed '>Cpu Speed (msec)</option>
           <option value='cmnd/ws/TelePeriod '>Get TelePeriod</option>
+					<option value='cmnd/ws/GmtOffset 1'>GmtOffset</option>
           <option value='cmnd/ws/tempoffset '>Temperature Offset</option>
           <option value='cmnd/ws/I2Cscan '>I2C Scan</option>
           <option value='cmnd/ws/config_gpio {"get_config":"0"}'>GPIO Config</option>
@@ -1178,6 +1182,21 @@ background: #47c266;
     <div id='wr_7' class='wr h_w'>
       <div class='m s'>
         <a href="https://github.com/au190/au190_myEsp" target="_blank" class='ck'>Help page</a>
+				
+				<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+				<div id="content"></div>
+
+				<script>
+					fetch("https://raw.githubusercontent.com/au190/au190_myEsp/main/readme.md")
+					.then(response => response.text())
+					.then(markdown => {
+						document.getElementById("content").innerHTML = marked.parse(markdown);
+					})
+					.catch(error => {
+						document.getElementById("content").innerHTML = "<p>Unable to load readme.md.</p>";
+					});
+				</script>
+				
       </div>
       <div style="text-align:right;font-size:11px;"><hr><a href="https://github.com/au190/au190_myEsp" target="_blank" style="color:#aaa;text-decoration:none;"><div class='ver'></div></a></div>
     </div>
