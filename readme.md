@@ -198,7 +198,7 @@ PowerOnTime - pin 			- (GPIO0 -> GPIO16) pin output. If 255 this future is disab
 						- time			- Switch ON at this hour:minute.
 						- timeOut		- Timeout is hour:minute. (00:01 - 18:00)
 						
-Turn ON the GPIO at this hour, for this timeout.
+Turn ON the GPIO at this hour:minute with timeOut hour:minute. If device startup in this interval, will wait 100 sec before turing on the output with recalculated timeOut.
 
 cmnd/ws/PowerOnTime
 cmnd/ws/PowerOnTime {"pin":4,"time":"10:00","timeOut":"7:00"}
