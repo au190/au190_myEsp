@@ -129,21 +129,22 @@
 	cmnd/ws/info
 	```
 
-  - Get Webpage Config
+	- Get Webpage Config
 	```
   cmnd/ws/config
 	```
-	
+
   - Get filesystem of ESP
 	```
   cmnd/ws/in {"fsys":""}
 	```
-	
-	
-  - Temperature offset
-Save the offset in byte: Convert -12.7 - +12.8 C -> convert to 0 - 255. Just 1 decimal.
 
+  - Temperature offset
+		- Save the offset in byte: Convert -12.7 - +12.8 C -> convert to 0 - 255. Just 1 decimal.
+	
+	```
   cmnd/ws/tempoffset -2.6
+	```
 
   - Get I2Cscan
   cmnd/ws/I2Cscan
