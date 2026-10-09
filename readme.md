@@ -5,18 +5,19 @@
 
 1.  After the firmware upload GPIO2 (Led) set to status Led_i_0.
 2.  After the restart all the output set to OFF.
-3.  4x4 power cycle. Power the device on for 4 sec 4 times (at cycle 4 do not power off !!!), on the 4 power cycle go in AP mode. Interval (ON > 4, OFF < 9) sec. Power cycle 4 reseting the PowerCycle to default. 
+3.  4x4 power cycle. Power the device on for 4 sec 4 times (at cycle 4 do not power off !!!), on the 4 power cycle go in AP mode. 
+		Interval (ON > 4, OFF < 9) sec. Power cycle 4 reseting the PowerCycle to default. 
 4.	AP ip: http://192.168.4.1
 5.	Upload the html page: esp_ip/upload
 
 
-- Blink:
+- **Blink**:
 	1. 100 msec    Connecting to Wifi
 	2. 1 sec       AP mode
 	3. 2 sec       No MQTT
 
 
-- PowerOnTime Logic:
+- ### PowerOnTime Logic:
 	1.	Set up the wifi.
 	2.	Before using this logic, must start with internet to save the time. Device is getting the time from NTP server.
 	3. Restarting the device without the internet, the device is using its own clock.
