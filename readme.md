@@ -18,18 +18,18 @@
 
 
 - #### PowerOnTime Logic:
-	-	Set up the wifi.
-	-	Before using this logic, must start with internet to save the time. Device is getting the time from NTP server.
-	-	Restarting the device without the internet, the device is using its own clock.
-	-	After 1 minute the device is checking the time and swiching the output (ON or OFF) with timeout.
-	-	If the time is equal to set time the device is swiching ON with timeout.
+1.	Set up the wifi.
+2.	Before using this logic, must start with internet to save the time. Device is syncing the time from NTP server.
+3.	Restarting the device without the internet, the device is starting with saved clock.
+4.	After 100 sec device is checking the time and swiching the output ON with timeout.
+5.	If the time is equal to set time the device is swiching ON with timeout.
 
--	PowerOnTime 
-	- pin 			- (GPIO0 -> GPIO16) pin output. If 255 this future is disabled.
-	- time			- Switch ON at this hour:minute.
-	- timeOut		- Timeout is hour:minute. (00:01 - 18:00)
+	-	PowerOnTime 
+		- pin 			- (GPIO0 -> GPIO16) pin output. If 255 this future is disabled.
+		- time			- Switch ON at this hour:minute.
+		- timeOut		- Timeout is hour:minute. (00:01 - 18:00)
 		
-- Turn ON the GPIO at this hour:minute with timeOut hour:minute. If device startup in this interval, will wait 100 sec before turing on the output with recalculated timeOut.
+- Turn ON the GPIO at this hour:minute with timeOut hour:minute. If device startup in this interval, will wait 100 sec before swiching on the output with recalculated timeOut.
 
 	```
 	cmnd/ws/PowerOnTime
