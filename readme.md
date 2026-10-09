@@ -1,10 +1,8 @@
 
-*******************************************************
-Upload the first html page.
+***
+Upload the first html page: ip/upload
 
- http://ip/upload
-
-*******************************************************
+***
 ### Wifi Md or Wifi button
 
 1.  If GPIO16 pull to HIGH (less then < 5 sec) at startup it will go in N  mode - not going in sleep mode.
