@@ -40,7 +40,7 @@
 
 
 *******************************************************
-- #### Configuration info
+- #### Pin configurations
   - Input
     - GPIO pin set as input
     - Checks in every 50msec and send the status ON or OFF
@@ -173,120 +173,133 @@
   cmnd/ws/PulseTimeOn 1
   ```
 
------------ Set cpuspeed  -----------
-Working interval for cpu in millisec. If you change this the webpage maybe not work.(recoonnect 1000ms)
-Input 1 - 255
-default: 50
-
+  - Set cpuspeed
+    - Working interval for cpu in millisec. If you change this the webpage maybe not work.(recoonnect 1000ms)
+    - Input 1 - 255
+    - default: 50
+  
+  ```
   cmnd/ws/cpuspeed 50
+  ```
 
------------ Set pms5003_speed  -----------
-Must be enabled in the code !
-Control sensor polling interval to extend lifetime (in minutes).
-Input: 1 - 255
-default: 30
+  - Set pms5003_speed
+    - Must be enabled in the code !
+    - Control sensor polling interval to extend lifetime (in minutes).
+    - Input: 1 - 255
+    - default: 30
 
+  ```
   cmnd/ws/pms5003_speed 30
+  ```
 
 
   - GmtOffset
-GmtOffset - Set the local timezoe and DT.
-Input: 1 - 2
-default: GMT1
+    - GmtOffset - Set the local timezoe and DT.
+    - Input: 1 - 2
+    - default: GMT1
 
+  ```
   cmnd/ws/GmtOffset
+  ```
+  ```
   cmnd/ws/GmtOffset 1
-
-  - PowerOnTime
-PowerOnTime - pin 			- (GPIO0 -> GPIO16) pin output. If 255 this future is disabled.
-						- time			- Switch ON at this hour:minute.
-						- timeOut		- Timeout is hour:minute. (00:01 - 18:00)
-						
-Turn ON the GPIO at this hour:minute with timeOut hour:minute. If device startup in this interval, will wait 100 sec before turing on the output with recalculated timeOut.
-
-  cmnd/ws/PowerOnTime
-  cmnd/ws/PowerOnTime {"pin":4,"time":"10:00","timeOut":"7:00"}
-
+  ```
 
 *******************************************************
-  - TASMOTA compatibile commands  -----------
+  - TASMOTA compatibile commands
 *******************************************************
-All index represents the real GPIO pin number (POWER0 -> POWER16)
+  - All index represents the real GPIO pin number (POWER0 -> POWER16)
 
   - PulseTime
-Command can be (PulseTime0 -> PulseTime16) represents (POWER0 -> POWER16)
+    - Command can be (PulseTime0 -> PulseTime16) represents (POWER0 -> POWER16)
+    - Display the amount of PulseTime remaining on the corresponding Relay<x> <value> Set the duration to keep Relay<x> ON when Power<x> ON command is issued. 
+    - After this amount of time, the power will be turned OFF.
+    - 0 / OFF     = disable use of PulseTime for Relay<x>
+    - 1..111      = set PulseTime for Relay<x> in 0.1 second increments
+    - 112..64900  = set PulseTime for Relay<x>, offset by 100, in 1 second increments. 
+                   -Add 100 to desired interval in seconds, e.g., PulseTime 113 = 13 seconds and PulseTime 460 = 6 minutes (i.e., 360 seconds)
+    - 
+    - 1     - 100 ms
+    - 2     - 200 ms
+    - 10    - 1 sec - 1000 ms 
+    - 20    - 2 sec
+    - 100   - 10 sec
+    - 111   - 11100 ms
+    - 
+    - 112   - 12 sec
+    - 113   - 13 sec
+    - (sec + 100) = in second
 
-Display the amount of PulseTime remaining on the corresponding Relay<x> <value> Set the duration to keep Relay<x> ON when Power<x> ON command is issued. 
-After this amount of time, the power will be turned OFF.
-0 / OFF     = disable use of PulseTime for Relay<x>
-1..111      = set PulseTime for Relay<x> in 0.1 second increments
-112..64900  = set PulseTime for Relay<x>, offset by 100, in 1 second increments. 
-              Add 100 to desired interval in seconds, e.g., PulseTime 113 = 13 seconds and PulseTime 460 = 6 minutes (i.e., 360 seconds)
-
-1     - 100 ms
-2     - 200 ms
-10    - 1 sec - 1000 ms 
-20    - 2 sec
-100   - 10 sec
-111   - 11100 ms
-
-112   - 12 sec
-113   - 13 sec
-(sec + 100) = in second
-
-- PulseTime - set pulse time to (POWER0 -> POWER16)
-- If PulseTime is 0 then - PulseTime is off
-- If PulseTime is empty return the current value
-
+    - PulseTime - set pulse time to (POWER0 -> POWER16)
+    - If PulseTime is 0 then - PulseTime is off
+    - If PulseTime is empty return the current value
+  
+  ```
   cmnd/ws/PulseTime5
+  ```
+  ```
   cmnd/ws/PulseTime5 300
+  ```
 
   - Power
-Get - Set the Power status
+    - Get Set the Power status
+    - If the PulseTime > 0 for the same Power it will applay aoutmaticaly! PulseTime=0 disable.
+    - Power can be 0, 1 ,ON, OFF, toggle. 
+    - Command can be (POWER0 -> POWER16)
+    - toggle = if power state is ON switch to OFF and vice versa
 
-- If the PulseTime > 0 for the same Power it will applay aoutmaticaly! PulseTime=0 disable.
-- Power can be 0, 1 ,ON, OFF, toggle. 
-- Command can be (POWER0 -> POWER16)
-- toggle = if power state is ON switch to OFF and vice versa
-
+  ```
   cmnd/ws/POWER7
+  ```
+  ```
   cmnd/ws/POWER7 toggle
+  ```
+  ```
   cmnd/ws/POWER7 ON
+  ```
+  ```
   cmnd/ws/POWER7 OFF
+  ```
 
   - TelePeriod
-How often sends the telemetry MQTT msg.
-
-- TelePeriod in seconds (min time is 10 sec max time is 3600)
-- TelePeriod 65535 will reset the Esp memmory to default (like a new flash).
-
+    - How often sends the telemetry MQTT msg.
+    - TelePeriod in seconds (min time is 10 sec max time is 3600)
+    - TelePeriod 65535 will reset the Esp memmory to default (like a new flash).
+  
+  ```
   cmnd/ws/TelePeriod
+  ```
+  ```
   cmnd/ws/TelePeriod 300
+  ```
 
   - Dimmer
-Command can be (Dimmer0 -> Dimmer16)
-Dimmer led with PWM 1 - 100%
+    - Command can be (Dimmer0 -> Dimmer16)
+    - Dimmer led with PWM 1 - 100%
 
+  ```
   cmnd/ws/Dimmer1
+  ```
+  ```
   cmnd/ws/Dimmer1 50
+  ```
 
 
   - PWMIR
-Command can be (PWMIR0 -> PWMIR16)
-PWMIR PWM for Irrigation. For the first 1 sec the PWM is set to 100 then it swiched to the percent specified in the command.
-PWM = 1 - 100%
+    - Command can be (PWMIR0 -> PWMIR16)
+    - PWMIR PWM for Irrigation. For the first 1 sec the PWM is set to 100 then it swiched to the percent specified in the command.
+    - PWM = 1 - 100%
 
+  ```
   cmnd/ws/PWMIR1
+  ```
+  ```
   cmnd/ws/PWMIR1 50
+  ```
 
 
 *******************************************************
-  - TASMOTA compatibile commands  -----------
-*******************************************************
-
-
-*******************************************************
-  - Just for APP_ALARM  -----------
+  - Just for APP_ALARM
 *******************************************************
 
 if Command is arm,sleep,disarm  subcomand is partition
@@ -303,40 +316,40 @@ if Command is bypass            subcomand is zone number from 0 to 31
   cmnd/ws/alarm {"c":"pgm_off","c1":"0","pw":"0000"}
 
 *******************************************************
-  - Just for APP_ALARM  -----------
+  - Just for APP_ALARM
 *******************************************************
 
 
 *******************************************************
-  - Just for APP_WS2812B  -----------
+  - Just for APP_WS2812B
 *******************************************************
 
------------ Set Color  -----------
+  - Set Color
 Input is: RBG color
 response --> {"topic":"stat/ws/RESULT","color":"ff0000","bri":100}
 
   cmnd/ws/color 255,0,0
   cmnd/ws/color 255,255,255
 
------------ Set Brightness  -----------
+  - Set Brightness
 Input 1 - 100
 response --> {"topic":"stat/ws/RESULT","color":"000080","bri":50}
 
   cmnd/ws/bri 50
 
------------ Set effect -----------
+  - Set effect -----------
 Input is the effect name.
 
   cmnd/ws/effect Rainbow
 
------------ Set maxpower  -----------
+  - Set maxpower
 Input 1 -255 --> 100mA - 25 500 mA
 Power set to ledstreep = maxpower * 100 = 100 - 25500 milliamps
 
   cmnd/ws/maxpower 10
 
 *******************************************************
-  - Just for APP_WS2812B  -----------
+  - Just for APP_WS2812B
 *******************************************************
 
 *******************************************************
@@ -358,13 +371,13 @@ EV1527 / RT1527 / FP1527 / HS1527
 Intertechno outlets
 HT6P20X 
 
------------ Enable disable protocols -----------
+  - Enable disable protocols -----------
 I have 37 protocol for RF. I can enable or disable one by one using rf_protocol_mask. Protocol max is hold on a 8 byte, 64 bit in memmory. Low bit = protocol 1. Ex: 1057 is the protocol: 1, 6, 11
 Max number of long long 64 bit = 18446744073709551615. I can set 64 different type of protcol. 
   cmnd/ws/rf_protocol_mask 
   cmnd/ws/rf_protocol_mask 18446744073709551615
 
------------ Scann RF signals -----------
+  - Scann RF signals -----------
 Start to record the timeings(buffer_size) on the interrupt input pin.
 Will try to find out the protocol start.
 buffer_size - [0 1024] 
@@ -373,10 +386,10 @@ filter      - filter out signals shorter that 350 us. [-32768 32767]
 
   cmnd/ws/rf_scann {"buffer_size":512,"tolerance":50,"filter":350}
 
------------ Send Raw RF signal Under develeopment -----------
+  - Send Raw RF signal Under develeopment -----------
   cmnd/ws/rf_sendraw {"data":"21,-56,34,-253,519,-265,165,-202,151,-256"}
 
------------ Send RF signal -----------
+  - Send RF signal -----------
   cmnd/ws/rf_send {"data":14448796,"bits":24,"protocol":1,"pulse":350}
 
 
@@ -391,28 +404,28 @@ filter      - filter out signals shorter that 350 us. [-32768 32767]
   cmnd/ws/ard_ota {"ard_ota":"1"}
   cmnd/ws/ard_ota {"ard_ota":"0"}
 
-  - Arduino get Configuration  -----------
+  - Arduino get Configuration
   cmnd/ws/ar {"getConf":""}
 
-  - Arduino Reset Power  -----------
+  - Arduino Reset Power
   cmnd/ws/ar {"resetPow":""}
 
-  - Arduino Get Set Power threshold  -----------
+  - Arduino Get Set Power threshold
   cmnd/ws/ar {"powThre":""}
   cmnd/ws/ar {"powThre":"200"}
 
-  - Arduino Set Power Calibration  -----------
+  - Arduino Set Power Calibration
 Calibraton calculated automatically if not set the vaule, or set a specific vaule
 
   cmnd/ws/ar {"calib":""}
   cmnd/ws/ar {"calib":"540"}
 
-  - Arduino set time  -----------
+  - Arduino set time
 Get the power info from Arduino, used internally, runs periodically at state_telemetry_period
 
 state;time
 
-  - Arduino get stauts  -----------
+  - Arduino get stauts
 Get all the output status form Arduino, used internally
 
 Status;time
