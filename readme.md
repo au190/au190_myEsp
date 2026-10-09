@@ -217,22 +217,21 @@
     - 0 / OFF     = disable use of PulseTime for Relay<x>
     - 1..111      = set PulseTime for Relay<x> in 0.1 second increments
     - 112..64900  = set PulseTime for Relay<x>, offset by 100, in 1 second increments. 
-                   -Add 100 to desired interval in seconds, e.g., PulseTime 113 = 13 seconds and PulseTime 460 = 6 minutes (i.e., 360 seconds)
-    - 
+    - Add 100 to desired interval in seconds, e.g., PulseTime 113 = 13 seconds and PulseTime 460 = 6 minutes (i.e., 360 seconds)
+    
     - 1     - 100 ms
     - 2     - 200 ms
     - 10    - 1 sec - 1000 ms 
     - 20    - 2 sec
     - 100   - 10 sec
     - 111   - 11100 ms
-    - 
+
     - 112   - 12 sec
     - 113   - 13 sec
     - (sec + 100) = in second
 
     - PulseTime - set pulse time to (POWER0 -> POWER16)
     - If PulseTime is 0 then - PulseTime is off
-    - If PulseTime is empty return the current value
   
   ```
   cmnd/ws/PulseTime5
