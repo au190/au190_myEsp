@@ -119,7 +119,7 @@
 	cmnd/ws/state
 	```
 
-	-	Get MQTT Status
+  - Get MQTT Status
 	```
 	cmnd/ws/Status 0
 	```
@@ -129,9 +129,9 @@
 	cmnd/ws/info
 	```
 
-	- Get Webpage Config
+  - Get Webpage Config
 	```
-  cmnd/ws/config
+	cmnd/ws/config
 	```
 
   - Get filesystem of ESP
