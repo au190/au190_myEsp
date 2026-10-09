@@ -11,13 +11,13 @@
 5.	Upload the html page: esp_ip/upload
 
 
-- **Blink**:
+- ##### Blink:
 	1. 100 msec    Connecting to Wifi
 	2. 1 sec       AP mode
 	3. 2 sec       No MQTT
 
 
-- ### PowerOnTime Logic:
+- #### PowerOnTime Logic:
 	1.	Set up the wifi.
 	2.	Before using this logic, must start with internet to save the time. Device is getting the time from NTP server.
 	3. Restarting the device without the internet, the device is using its own clock.
