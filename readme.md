@@ -1,5 +1,4 @@
 
-*******************************************************
 ## myEsp
 
 
@@ -59,9 +58,14 @@
 	
 	- Multisensor:
 	```
-	{"o_0":255,"o_1":255,"o_2":175,"o_3":255,"o_4":255,"o_5":6,"o_12":8,"o_13":9,"o_14":15,"o_15":255,"o_16":255,"o_17":81}
+	{"o_0":255,"o_1":255,"o_2":175,"o_3":255,"o_4":255,"o_5":6,"o_12":8,"o_13":9,"o_14":15,"o_15":255,"o_16":255,"o_17":80}
 	```
 
+  - Multisensor RF:
+	```
+	{"o_0":255,"o_1":255,"o_2":175,"o_3":255,"o_4":17,"o_5":6,"o_12":8,"o_13":9,"o_14":15,"o_15":255,"o_16":255,"o_17":80}
+	```
+  
 	- Multisensor PMS:
 	```
 	{"o_0":14,"o_1":255,"o_2":175,"o_3":255,"o_4":13,"o_5":6,"o_12":8,"o_13":9,"o_14":15,"o_15":255,"o_16":255,"o_17":81}
@@ -421,17 +425,22 @@ Blink:
 #### Just for USE_RC_SWITCH
 *******************************************************
 
-  - When we are using RF 433MHz sensor USE_RC_SWITCH. 
+  - When we are using RF 433MHz sensor USE_RC_SWITCH.
+    - Remote Control AK-K21080 12 Button Black Edge EV1527 Encoding Chip, 433mhz US $3.04 (Princeton, PT-2240)
+    - 315/433Mhz Superheterodyne Wireless Receiver Module RXB4 RXB8 RXB9 RXB35 RXB12 RXB14 RXB22 RXB6 For AVR (my decoder)
     - Supported chipsets:
       - SC5262 / SC5272
       - HX2262 / HX2272
       - PT2262 / PT2272
       - EV1527 / RT1527 / FP1527 / HS1527 
       - Intertechno outlets
-      - HT6P20X 
+      - HT6P20X
+      
+      
   
   - Enable disable protocols
-  I have 37 protocol for RF. I can enable or disable one by one using rf_protocol_mask. Protocol max is hold on a 8 byte, 64 bit in memmory. Low bit = protocol 1. Ex: 1057 is the protocol: 1, 6, 11
+  I have 37 protocol for RF. I can enable or disable one by one using rf_protocol_mask. 
+  Protocol max is hold on 8 byte, 64 bit in memmory. Low bit = protocol 1. Ex: 1057 is the protocol: 1, 6, 11
   Max number of long long 64 bit = 18446744073709551615. I can set 64 different type of protcol. 
   
   ```
@@ -530,7 +539,7 @@ Blink:
 
 
 *******************************************************
-#### Upload the the firmware in different way
+#### Upload the firmware in different way
 *******************************************************
   - Esp upload:
   
