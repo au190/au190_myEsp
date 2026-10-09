@@ -422,13 +422,13 @@ Blink:
 *******************************************************
 
   - When we are using RF 433MHz sensor USE_RC_SWITCH. 
-  Supported chipsets:
-  SC5262 / SC5272
-  HX2262 / HX2272
-  PT2262 / PT2272
-  EV1527 / RT1527 / FP1527 / HS1527 
-  Intertechno outlets
-  HT6P20X 
+    - Supported chipsets:
+      - SC5262 / SC5272
+      - HX2262 / HX2272
+      - PT2262 / PT2272
+      - EV1527 / RT1527 / FP1527 / HS1527 
+      - Intertechno outlets
+      - HT6P20X 
   
   - Enable disable protocols
   I have 37 protocol for RF. I can enable or disable one by one using rf_protocol_mask. Protocol max is hold on a 8 byte, 64 bit in memmory. Low bit = protocol 1. Ex: 1057 is the protocol: 1, 6, 11
