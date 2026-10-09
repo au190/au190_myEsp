@@ -62,7 +62,7 @@ Blink:
 4.	After 1 minute the device is checking the time and swiching the output (ON or OFF) with timeout.
 5.	If the time is equal to set time the device is swiching ON with timeout.
 
------------   PowerOnTime   -----------
+#
 PowerOnTime - pin 			- (GPIO0 -> GPIO16) pin output. If 255 this future is disabled.
 						- time			- Switch ON at this hour:minute.
 						- timeOut		- Timeout is hour:minute. (00:01 - 18:00)
