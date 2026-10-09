@@ -11,7 +11,7 @@
 5.	Upload the html page: esp_ip/upload
 
 
-#### Blink:
+- #### Blink:
 	-	100 msec    Connecting to Wifi
 	-	1 sec       AP mode
 	-	2 sec       No MQTT
