@@ -30,9 +30,9 @@
 	- time			- Switch ON at this hour:minute.
 	- timeOut		- Timeout is hour:minute. (00:01 - 18:00)
 
-```
-cmnd/ws/PowerOnTime
-```
+	```
+	cmnd/ws/PowerOnTime
+	```
 	```
 	cmnd/ws/PowerOnTime {"pin":4,"time":"10:00","timeOut":"7:00"}
 	```
