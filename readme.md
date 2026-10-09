@@ -11,24 +11,19 @@
 
 
 - Blink:
-	1.  100 msec    Connecting to Wifi
-	2.  1 sec       AP mode
-	3.  2 sec       No MQTT
+
+1.  100 msec    Connecting to Wifi
+2.  1 sec       AP mode
+3.  2 sec       No MQTT
 
 
-* Blink:
+- PowerOnTime Logic:
 
-  1. 100 msec Connecting to Wifi
-  2. 1 sec AP mode
-  3. 2 sec No MQTT
-
-
-- PowerOnTime Logic.
-	1.	Set up the wifi.
-	2.	Before using this logic, must start with internet to save the time. Device is getting the time from NTP server.
-	3.	Restarting the device without the internet, the device is using its own clock.
-	4.	After 1 minute the device is checking the time and swiching the output (ON or OFF) with timeout.
-	5.	If the time is equal to set time the device is swiching ON with timeout.
+1.	Set up the wifi.
+2.	Before using this logic, must start with internet to save the time. Device is getting the time from NTP server.
+3.	Restarting the device without the internet, the device is using its own clock.
+4.	After 1 minute the device is checking the time and swiching the output (ON or OFF) with timeout.
+5.	If the time is equal to set time the device is swiching ON with timeout.
 
 	-	PowerOnTime 
 		- pin 			- (GPIO0 -> GPIO16) pin output. If 255 this future is disabled.
@@ -39,6 +34,8 @@
 	
 	```
 	cmnd/ws/PowerOnTime
+	```
+	```
 	cmnd/ws/PowerOnTime {"pin":4,"time":"10:00","timeOut":"7:00"}
 	```
 
