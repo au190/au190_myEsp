@@ -119,12 +119,9 @@
 	cmnd/ws/state
 	```
 
+	-	Get MQTT Status
 	```
-	cmnd/ws/state
-	```
-  - Get MQTT Status
-	```
-  cmnd/ws/Status 0
+	cmnd/ws/Status 0
 	```
 
   - Get Webpage Info
