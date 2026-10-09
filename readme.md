@@ -124,30 +124,37 @@
   cmnd/ws/Status 0
 	```
 
------------   Get Webpage Info
-  cmnd/ws/info
+  - Get Webpage Info
+	```
+	cmnd/ws/info
+	```
 
------------   Get Webpage Config
+  - Get Webpage Config
+	```
   cmnd/ws/config
-
------------   Get filesystem of ESP
+	```
+	
+  - Get filesystem of ESP
+	```
   cmnd/ws/in {"fsys":""}
-
------------   Temperature offset
+	```
+	
+	
+  - Temperature offset
 Save the offset in byte: Convert -12.7 - +12.8 C -> convert to 0 - 255. Just 1 decimal.
 
   cmnd/ws/tempoffset -2.6
 
------------   Get I2Cscan
+  - Get I2Cscan
   cmnd/ws/I2Cscan
 
------------   Get Webpage GPIO Config
+  - Get Webpage GPIO Config
   cmnd/ws/config_gpio
 
------------   Reboot ESP
+  - Reboot ESP
   cmnd/ws/reboot
 
------------   PulseTimeOn
+  - PulseTimeOn
 PulseTimeOn - Turn ON the GPIO without sending a POWER ON msg
             - It can be 1 or other
             - defult 255
@@ -171,7 +178,7 @@ default: 30
   cmnd/ws/pms5003_speed 30
 
 
------------   GmtOffset
+  - GmtOffset
 GmtOffset - Set the local timezoe and DT.
 Input: 1 - 2
 default: GMT1
@@ -179,7 +186,7 @@ default: GMT1
   cmnd/ws/GmtOffset
   cmnd/ws/GmtOffset 1
 
------------   PowerOnTime
+  - PowerOnTime
 PowerOnTime - pin 			- (GPIO0 -> GPIO16) pin output. If 255 this future is disabled.
 						- time			- Switch ON at this hour:minute.
 						- timeOut		- Timeout is hour:minute. (00:01 - 18:00)
@@ -191,11 +198,11 @@ Turn ON the GPIO at this hour:minute with timeOut hour:minute. If device startup
 
 
 *******************************************************
------------   TASMOTA compatibile commands  -----------
+  - TASMOTA compatibile commands  -----------
 *******************************************************
 All index represents the real GPIO pin number (POWER0 -> POWER16)
 
------------   PulseTime
+  - PulseTime
 Command can be (PulseTime0 -> PulseTime16) represents (POWER0 -> POWER16)
 
 Display the amount of PulseTime remaining on the corresponding Relay<x> <value> Set the duration to keep Relay<x> ON when Power<x> ON command is issued. 
@@ -223,7 +230,7 @@ After this amount of time, the power will be turned OFF.
   cmnd/ws/PulseTime5
   cmnd/ws/PulseTime5 300
 
------------   Power
+  - Power
 Get - Set the Power status
 
 - If the PulseTime > 0 for the same Power it will applay aoutmaticaly! PulseTime=0 disable.
@@ -236,7 +243,7 @@ Get - Set the Power status
   cmnd/ws/POWER7 ON
   cmnd/ws/POWER7 OFF
 
------------   TelePeriod
+  - TelePeriod
 How often sends the telemetry MQTT msg.
 
 - TelePeriod in seconds (min time is 10 sec max time is 3600)
@@ -245,7 +252,7 @@ How often sends the telemetry MQTT msg.
   cmnd/ws/TelePeriod
   cmnd/ws/TelePeriod 300
 
------------   Dimmer
+  - Dimmer
 Command can be (Dimmer0 -> Dimmer16)
 Dimmer led with PWM 1 - 100%
 
@@ -253,7 +260,7 @@ Dimmer led with PWM 1 - 100%
   cmnd/ws/Dimmer1 50
 
 
------------   PWMIR
+  - PWMIR
 Command can be (PWMIR0 -> PWMIR16)
 PWMIR PWM for Irrigation. For the first 1 sec the PWM is set to 100 then it swiched to the percent specified in the command.
 PWM = 1 - 100%
@@ -263,12 +270,12 @@ PWM = 1 - 100%
 
 
 *******************************************************
------------   TASMOTA compatibile commands  -----------
+  - TASMOTA compatibile commands  -----------
 *******************************************************
 
 
 *******************************************************
------------   Just for APP_ALARM  -----------
+  - Just for APP_ALARM  -----------
 *******************************************************
 
 if Command is arm,sleep,disarm  subcomand is partition
@@ -285,12 +292,12 @@ if Command is bypass            subcomand is zone number from 0 to 31
   cmnd/ws/alarm {"c":"pgm_off","c1":"0","pw":"0000"}
 
 *******************************************************
------------   Just for APP_ALARM  -----------
+  - Just for APP_ALARM  -----------
 *******************************************************
 
 
 *******************************************************
------------   Just for APP_WS2812B  -----------
+  - Just for APP_WS2812B  -----------
 *******************************************************
 
 ----------- Set Color  -----------
@@ -318,18 +325,18 @@ Power set to ledstreep = maxpower * 100 = 100 - 25500 milliamps
   cmnd/ws/maxpower 10
 
 *******************************************************
------------   Just for APP_WS2812B  -----------
+  - Just for APP_WS2812B  -----------
 *******************************************************
 
 *******************************************************
------------   Just for USE_AHT2x -----------
+  - Just for USE_AHT2x -----------
 *******************************************************
 
 - When we are using the sensor USE_AHT2x. We need to set the CPU = 100. When we write to sensor, we have to red out he message in 100 ms.
 - Use the I2C_SCL and I2C_SDA for this sensor.
 
 *******************************************************
------------   Just for USE_RC_SWITCH -----------
+  - Just for USE_RC_SWITCH -----------
 *******************************************************
 - When we are using RF 433MHz sensor USE_RC_SWITCH. 
 Supported chipsets:
@@ -364,55 +371,55 @@ filter      - filter out signals shorter that 350 us. [-32768 32767]
 
 
 *******************************************************
------------   Just for ARDUINO -----------
+  - Just for ARDUINO -----------
 *******************************************************
 
------------   Arduino OTA
+  - Arduino OTA
 - Working just with wsS - Wifi serial Gateway. Used to reset the Arduino for OTA update.
 
   cmnd/ws/ard_ota {"ard_ota":"1"}
   cmnd/ws/ard_ota {"ard_ota":"0"}
 
------------   Arduino get Configuration  -----------
+  - Arduino get Configuration  -----------
   cmnd/ws/ar {"getConf":""}
 
------------   Arduino Reset Power  -----------
+  - Arduino Reset Power  -----------
   cmnd/ws/ar {"resetPow":""}
 
------------   Arduino Get Set Power threshold  -----------
+  - Arduino Get Set Power threshold  -----------
   cmnd/ws/ar {"powThre":""}
   cmnd/ws/ar {"powThre":"200"}
 
------------   Arduino Set Power Calibration  -----------
+  - Arduino Set Power Calibration  -----------
 Calibraton calculated automatically if not set the vaule, or set a specific vaule
 
   cmnd/ws/ar {"calib":""}
   cmnd/ws/ar {"calib":"540"}
 
------------   Arduino set time  -----------
+  - Arduino set time  -----------
 Get the power info from Arduino, used internally, runs periodically at state_telemetry_period
 
 state;time
 
------------   Arduino get stauts  -----------
+  - Arduino get stauts  -----------
 Get all the output status form Arduino, used internally
 
 Status;time
 
------------   Arduino set time
+  - Arduino set time
 Send the configuration to arduino after boot, used internally
 
 xtime;time
 
 *******************************************************
------------   Just for ARDUINO -----------
+  - Just for ARDUINO -----------
 *******************************************************
 
 
 
 
 *******************************************************
------------   Upload the the firmware in different way -----------
+  - Upload the the firmware in different way -----------
 *******************************************************
 Esp upload:
 
