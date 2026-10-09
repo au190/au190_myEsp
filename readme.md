@@ -371,8 +371,7 @@ Blink:
   #### Just for APP_WS2812B
 *******************************************************
 
-  - 1. Same as myEsp just GPIO4 is the output for WS2812B - do not use this pin for other config !!!
-
+  - Same as myEsp just GPIO4 is the output for WS2812B - do not use this pin for other config !!!
   - Set Color
    - Input is: RBG color
    - response --> {"topic":"stat/ws/RESULT","color":"ff0000","bri":100}
