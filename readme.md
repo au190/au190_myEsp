@@ -497,19 +497,16 @@
 *******************************************************
   - Esp upload:
   
+  - Linux
+    - python3 /home/ha/ota/espota_manual.py -i 192.168.1.5 -f /home/ha/ota/myEsp_v30.bin
 
-python3 /home/ha/ota/espota_manual.py -i 192.168.1.5 -f /home/ha/ota/myEsp_v30.bin
-
-python.exe d:\G_Drive\MySoft\IHome\Ha\ota\espota_manual.py -i 192.168.2.5 -f d:\Github\au190_myEsp\myEsp_v29.bin
-
-
- - Check the Arduino IDE logs where is the path for the upload.py.
+  - Check the Arduino IDE logs where is the path for the upload.py.
 
     - C:\Users\admin\Documents\ArduinoData\packages\esp8266\tools\python3\3.7.2-post1/python3 C:\Users\admin\Documents\ArduinoData\packages\esp8266\hardware\esp8266\2.7.4/tools/upload.py --chip esp8266 --port COM4 --baud 115200 --before default_reset --after hard_reset write_flash 0x0 d:\uC\myEsp\myEsp\myEsp.ino.generic.bin
 
     - C:\Users\admin\Documents\ArduinoData\packages\esp8266\tools\python3\3.7.2-post1/python3 C:\Users\admin\Documents\ArduinoData\packages\esp8266\hardware\esp8266\2.7.4/tools/upload.py --chip esp8266 --port COM4 --baud 115200 erase_flash --before default_reset --after hard_reset write_flash 0x0 d:\uC\myEsp\myEsp\myEsp.ino.generic.bin
 
-
+    - python.exe d:\G_Drive\MySoft\IHome\Ha\ota\espota_manual.py -i 192.168.2.5 -f d:\Github\au190_myEsp\myEsp_v29.bin
 
 Arduino upload:
 
