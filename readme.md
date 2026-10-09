@@ -205,6 +205,7 @@
   cmnd/ws/GmtOffset 1
   ```
 
+
 *******************************************************
   - TASMOTA compatibile commands
 *******************************************************
@@ -302,22 +303,34 @@
   - Just for APP_ALARM
 *******************************************************
 
-if Command is arm,sleep,disarm  subcomand is partition
-if Command is bypass            subcomand is zone number from 0 to 31 
+  - If Command is arm,sleep,disarm  subcomand is partition
+  - If Command is bypass            subcomand is zone number from 0 to 31 
 
+  ```
   cmnd/ws/alarm {"c":"disarm","c1":"0","pw":"0000"}
+  ```
+  ```
   cmnd/ws/alarm {"c":"sleep","c1":"0","pw":"0000"}
+  ```
+  ```
   cmnd/ws/alarm {"c":"stay","c1":"0","pw":"0000"}
+  ```
+  ```
   cmnd/ws/alarm {"c":"arm","c1":"0","pw":"0000"}
-
+  ```
+  ```
   cmnd/ws/alarm {"c":"panelstatus","c1":"0","pw":"0000"}
+  ```
+  ```
   cmnd/ws/alarm {"c":"panelstatus","c1":"1","pw":"0000"}
+  ```
+  ```
   cmnd/ws/alarm {"c":"pgm_on","c1":"0","pw":"0000"}
+  ```
+  ```
   cmnd/ws/alarm {"c":"pgm_off","c1":"0","pw":"0000"}
+  ```
 
-*******************************************************
-  - Just for APP_ALARM
-*******************************************************
 
 
 *******************************************************
@@ -325,141 +338,182 @@ if Command is bypass            subcomand is zone number from 0 to 31
 *******************************************************
 
   - Set Color
-Input is: RBG color
-response --> {"topic":"stat/ws/RESULT","color":"ff0000","bri":100}
+   - Input is: RBG color
+   - response --> {"topic":"stat/ws/RESULT","color":"ff0000","bri":100}
 
+  ```
   cmnd/ws/color 255,0,0
+  ```
+  ```
   cmnd/ws/color 255,255,255
+  ```
 
   - Set Brightness
-Input 1 - 100
-response --> {"topic":"stat/ws/RESULT","color":"000080","bri":50}
+    - Input 1 - 100
+    - response --> {"topic":"stat/ws/RESULT","color":"000080","bri":50}
 
+  ```
   cmnd/ws/bri 50
+  ```
 
-  - Set effect -----------
-Input is the effect name.
+  - Set effect
+    - Input is the effect name.
 
+  ```
   cmnd/ws/effect Rainbow
+  ```
 
   - Set maxpower
-Input 1 -255 --> 100mA - 25 500 mA
-Power set to ledstreep = maxpower * 100 = 100 - 25500 milliamps
-
+    - Input 1 -255 --> 100mA - 25 500 mA
+    - Power set to ledstreep = maxpower * 100 = 100 - 25500 milliamps
+  
+  ```
   cmnd/ws/maxpower 10
+  ```
+
 
 *******************************************************
-  - Just for APP_WS2812B
+  - Just for USE_AHT2x
 *******************************************************
 
-*******************************************************
-  - Just for USE_AHT2x -----------
-*******************************************************
+  - When we are using the sensor USE_AHT2x. We need to set the CPU = 100. When we write to sensor, we have to red out he message in 100 ms.
+  - Use the I2C_SCL and I2C_SDA for this sensor.
 
-- When we are using the sensor USE_AHT2x. We need to set the CPU = 100. When we write to sensor, we have to red out he message in 100 ms.
-- Use the I2C_SCL and I2C_SDA for this sensor.
+
 
 *******************************************************
-  - Just for USE_RC_SWITCH -----------
+  - Just for USE_RC_SWITCH
 *******************************************************
-- When we are using RF 433MHz sensor USE_RC_SWITCH. 
-Supported chipsets:
-SC5262 / SC5272
-HX2262 / HX2272
-PT2262 / PT2272
-EV1527 / RT1527 / FP1527 / HS1527 
-Intertechno outlets
-HT6P20X 
 
-  - Enable disable protocols -----------
-I have 37 protocol for RF. I can enable or disable one by one using rf_protocol_mask. Protocol max is hold on a 8 byte, 64 bit in memmory. Low bit = protocol 1. Ex: 1057 is the protocol: 1, 6, 11
-Max number of long long 64 bit = 18446744073709551615. I can set 64 different type of protcol. 
-  cmnd/ws/rf_protocol_mask 
+  - When we are using RF 433MHz sensor USE_RC_SWITCH. 
+  Supported chipsets:
+  SC5262 / SC5272
+  HX2262 / HX2272
+  PT2262 / PT2272
+  EV1527 / RT1527 / FP1527 / HS1527 
+  Intertechno outlets
+  HT6P20X 
+  
+  - Enable disable protocols
+  I have 37 protocol for RF. I can enable or disable one by one using rf_protocol_mask. Protocol max is hold on a 8 byte, 64 bit in memmory. Low bit = protocol 1. Ex: 1057 is the protocol: 1, 6, 11
+  Max number of long long 64 bit = 18446744073709551615. I can set 64 different type of protcol. 
+  
+  ```
+  cmnd/ws/rf_protocol_mask
+  ```
+  ```
   cmnd/ws/rf_protocol_mask 18446744073709551615
+  ```
 
-  - Scann RF signals -----------
-Start to record the timeings(buffer_size) on the interrupt input pin.
-Will try to find out the protocol start.
-buffer_size - [0 1024] 
-tolerance   - [0 100] in %
-filter      - filter out signals shorter that 350 us. [-32768 32767]
+  - Scann RF signals
+    - Start to record the timeings(buffer_size) on the interrupt input pin.
+    - Will try to find out the protocol start.
+    - buffer_size - [0 1024] 
+    - tolerance   - [0 100] in %
+    - filter      - filter out signals shorter that 350 us. [-32768 32767]
 
+  ```
   cmnd/ws/rf_scann {"buffer_size":512,"tolerance":50,"filter":350}
-
-  - Send Raw RF signal Under develeopment -----------
+  ```
+  
+  - Send Raw RF signal Under develeopment
+  ```
   cmnd/ws/rf_sendraw {"data":"21,-56,34,-253,519,-265,165,-202,151,-256"}
+  ```
 
-  - Send RF signal -----------
+  - Send RF signal
+  ```
   cmnd/ws/rf_send {"data":14448796,"bits":24,"protocol":1,"pulse":350}
-
+  ```
 
 
 *******************************************************
-  - Just for ARDUINO -----------
+  - Just for ARDUINO
 *******************************************************
 
   - Arduino OTA
-- Working just with wsS - Wifi serial Gateway. Used to reset the Arduino for OTA update.
+  - Working just with wsS - Wifi serial Gateway. Used to reset the Arduino for OTA update.
 
+  ```
   cmnd/ws/ard_ota {"ard_ota":"1"}
+  ```
+  ```
   cmnd/ws/ard_ota {"ard_ota":"0"}
+  ```
 
   - Arduino get Configuration
+  ```
   cmnd/ws/ar {"getConf":""}
+  ```
 
   - Arduino Reset Power
+  ```
   cmnd/ws/ar {"resetPow":""}
+  ```
 
   - Arduino Get Set Power threshold
+  ```
   cmnd/ws/ar {"powThre":""}
+  ```
+  ```
   cmnd/ws/ar {"powThre":"200"}
+  ```
 
   - Arduino Set Power Calibration
-Calibraton calculated automatically if not set the vaule, or set a specific vaule
+    - Calibraton calculated automatically if not set the vaule, or set a specific vaule
 
+  ```
   cmnd/ws/ar {"calib":""}
+  ```
+  ```
   cmnd/ws/ar {"calib":"540"}
-
+  ```
+  
   - Arduino set time
-Get the power info from Arduino, used internally, runs periodically at state_telemetry_period
+    - Get the power info from Arduino, used internally, runs periodically at state_telemetry_period
 
-state;time
+  ```
+  state;time
+  ```
 
   - Arduino get stauts
-Get all the output status form Arduino, used internally
+    - Get all the output status form Arduino, used internally
 
-Status;time
+  ```
+  Status;time
+  ```
 
   - Arduino set time
-Send the configuration to arduino after boot, used internally
+    - Send the configuration to arduino after boot, used internally
 
-xtime;time
-
-*******************************************************
-  - Just for ARDUINO -----------
-*******************************************************
-
+  ```
+  xtime;time
+  ```
 
 
 
 *******************************************************
-  - Upload the the firmware in different way -----------
+  - Upload the the firmware in different way
 *******************************************************
-Esp upload:
+  - Esp upload:
+  
+  ```
+  python3 /home/ha/ota/espota_manual.py -i 192.168.1.5 -f /home/ha/ota/myEsp_v30.bin
+  ```
+  
+  python.exe d:\G_Drive\MySoft\IHome\Ha\ota\espota_manual.py -i 192.168.2.5 -f d:\Github\au190_myEsp\myEsp_v29.bin
 
-python3 /home/ha/ota/espota_manual.py -i 192.168.1.5 -f /home/ha/ota/myEsp_v30.bin
-
-python.exe d:\G_Drive\MySoft\IHome\Ha\ota\espota_manual.py -i 192.168.2.5 -f d:\Github\au190_myEsp\myEsp_v29.bin
-
-Check the Arduino IDE logs where is the path for the upload.py.
-C:\Users\admin\Documents\ArduinoData\packages\esp8266\tools\python3\3.7.2-post1/python3 C:\Users\admin\Documents\ArduinoData\packages\esp8266\hardware\esp8266\2.7.4/tools/upload.py --chip esp8266 --port COM4 --baud 115200 --before default_reset --after hard_reset write_flash 0x0 d:\uC\myEsp\myEsp\myEsp.ino.generic.bin
-C:\Users\admin\Documents\ArduinoData\packages\esp8266\tools\python3\3.7.2-post1/python3 C:\Users\admin\Documents\ArduinoData\packages\esp8266\hardware\esp8266\2.7.4/tools/upload.py --chip esp8266 --port COM4 --baud 115200 erase_flash --before default_reset --after hard_reset write_flash 0x0 d:\uC\myEsp\myEsp\myEsp.ino.generic.bin
+  Check the Arduino IDE logs where is the path for the upload.py.
+  ```
+  C:\Users\admin\Documents\ArduinoData\packages\esp8266\tools\python3\3.7.2-post1/python3 C:\Users\admin\Documents\ArduinoData\packages\esp8266\hardware\esp8266\2.7.4/tools/upload.py --chip esp8266 --port COM4 --baud 115200 --before default_reset --after hard_reset write_flash 0x0 d:\uC\myEsp\myEsp\myEsp.ino.generic.bin
+  ```
+  C:\Users\admin\Documents\ArduinoData\packages\esp8266\tools\python3\3.7.2-post1/python3 C:\Users\admin\Documents\ArduinoData\packages\esp8266\hardware\esp8266\2.7.4/tools/upload.py --chip esp8266 --port COM4 --baud 115200 erase_flash --before default_reset --after hard_reset write_flash 0x0 d:\uC\myEsp\myEsp\myEsp.ino.generic.bin
 
 
 
-Arduino upload:
+  Arduino upload:
 
-"c:\Program Files\Python37\python.exe" d:\G_Drive\MySoft\IHome\Ha\ota\ard_ota\ard_ota.py -i 192.168.1.5 -f d:\GDrive\MySoft\IHome\Ha\ota\ard_ota\a_irrig.ino.eightanaloginputs_v3.hex
-"c:\Program Files\Python37\python.exe" d:\G_Drive\MySoft\IHome\Ha\ota\ard_ota\ard_ota.py -i 192.168.1.5 -f d:\uC\myEsp\a1_lawnmower\a1_lawnmower.ino.eightanaloginputs.hex
+  "c:\Program Files\Python37\python.exe" d:\G_Drive\MySoft\IHome\Ha\ota\ard_ota\ard_ota.py -i 192.168.1.5 -f d:\GDrive\MySoft\IHome\Ha\ota\ard_ota\a_irrig.ino.eightanaloginputs_v3.hex
+  "c:\Program Files\Python37\python.exe" d:\G_Drive\MySoft\IHome\Ha\ota\ard_ota\ard_ota.py -i 192.168.1.5 -f d:\uC\myEsp\a1_lawnmower\a1_lawnmower.ino.eightanaloginputs.hex
 
 
