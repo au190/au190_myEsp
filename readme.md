@@ -139,7 +139,7 @@
   cmnd/ws/in {"fsys":""}
   ```
 
-	- Temperature offset
+  - Temperature offset
 		- Save the offset in byte: Convert -12.7 - +12.8 C -> convert to 0 - 255. Just 1 decimal.
 	
 	```
@@ -147,21 +147,31 @@
 	```
 
   - Get I2Cscan
+  ```
   cmnd/ws/I2Cscan
-
+  ```
+  
   - Get Webpage GPIO Config
+  ```
   cmnd/ws/config_gpio
+  ```
 
   - Reboot ESP
+  ```
   cmnd/ws/reboot
+  ```
 
   - PulseTimeOn
-PulseTimeOn - Turn ON the GPIO without sending a POWER ON msg
-            - It can be 1 or other
-            - defult 255
+    - Turn ON the GPIO without sending a POWER ON msg
+    - It can be 1 or other
+    - defult 255
 
+  ```
   cmnd/ws/PulseTimeOn
+  ```
+  ```
   cmnd/ws/PulseTimeOn 1
+  ```
 
 ----------- Set cpuspeed  -----------
 Working interval for cpu in millisec. If you change this the webpage maybe not work.(recoonnect 1000ms)
