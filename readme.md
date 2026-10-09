@@ -16,6 +16,13 @@
 	3.  2 sec       No MQTT
 
 
+* Blink:
+
+  1. 100 msec Connecting to Wifi
+  2. 1 sec AP mode
+  3. 2 sec No MQTT
+
+
 - PowerOnTime Logic.
 	1.	Set up the wifi.
 	2.	Before using this logic, must start with internet to save the time. Device is getting the time from NTP server.
