@@ -119,6 +119,9 @@
 	cmnd/ws/state
 	```
 
+	```
+	cmnd/ws/state
+	```
   - Get MQTT Status
 	```
   cmnd/ws/Status 0
