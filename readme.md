@@ -10,10 +10,10 @@
 5.	Upload the html page: esp_ip/upload
 
 
-## Blink:
-1.  100 msec    Connecting to Wifi
-2.  1 sec       AP mode
-3.  2 sec       No MQTT
+	- Blink:
+		1.  100 msec    Connecting to Wifi
+		2.  1 sec       AP mode
+		3.  2 sec       No MQTT
 
 
 ## PowerOnTime Logic.
