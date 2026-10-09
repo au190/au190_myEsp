@@ -1,6 +1,6 @@
 
 ********************
-# myEsp
+## myEsp
 
 
 1.  After the firmware upload GPIO2 (Led) set to status Led_i_0.
@@ -11,7 +11,7 @@
 5.	Upload the html page: esp_ip/upload
 
 
-- #### Blink:
+#### Blink:
 	-	100 msec    Connecting to Wifi
 	-	1 sec       AP mode
 	-	2 sec       No MQTT
