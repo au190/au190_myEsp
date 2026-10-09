@@ -116,7 +116,7 @@
 
   - Get MQTT State
 	```
-  cmnd/ws/state
+	cmnd/ws/state
 	```
 
   - Get MQTT Status
@@ -432,10 +432,3 @@ Arduino upload:
 "c:\Program Files\Python37\python.exe" d:\G_Drive\MySoft\IHome\Ha\ota\ard_ota\ard_ota.py -i 192.168.1.5 -f d:\uC\myEsp\a1_lawnmower\a1_lawnmower.ino.eightanaloginputs.hex
 
 
-
-
-
-
-
-
-```
