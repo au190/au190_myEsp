@@ -24,16 +24,15 @@
 4.	After 100 sec device is checking the time and swiching the output ON with timeout.
 5.	If the time is equal to set time the device is swiching ON with timeout.
 
-	-	PowerOnTime 
-		- pin 			- (GPIO0 -> GPIO16) pin output. If 255 this future is disabled.
-		- time			- Switch ON at this hour:minute.
-		- timeOut		- Timeout is hour:minute. (00:01 - 18:00)
-		
-- Turn ON the GPIO at this hour:minute with timeOut hour:minute. If device startup in this interval, will wait 100 sec before swiching on the output with recalculated timeOut.
+-	PowerOnTime
+	- Turn ON the GPIO at this hour:minute with timeOut hour:minute. If device startup in this interval, will wait 100 sec before swiching ON the output with recalculated timeOut.
+	- pin 			- (GPIO0 -> GPIO16) pin output. If 255 this future is disabled.
+	- time			- Switch ON at this hour:minute.
+	- timeOut		- Timeout is hour:minute. (00:01 - 18:00)
 
-	```
-	cmnd/ws/PowerOnTime
-	```
+```
+cmnd/ws/PowerOnTime
+```
 	```
 	cmnd/ws/PowerOnTime {"pin":4,"time":"10:00","timeOut":"7:00"}
 	```
