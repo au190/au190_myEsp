@@ -11,21 +11,20 @@
 5.	Upload the html page: esp_ip/upload
 
 
-- #### Blink:
+- #### Blink
 	-	100 msec    Connecting to Wifi
 	-	1 sec       AP mode
 	-	2 sec       No MQTT
 
 
-- #### PowerOnTime Logic:
+- #### PowerOnTime
 1.	Set up the wifi.
 2.	Before using this logic, must start with internet to save the time. Device is syncing the time from NTP server.
 3.	Restarting the device without the internet, the device is starting with saved clock.
 4.	After 100 sec device is checking the time and swiching the output ON with timeout.
-5.	If the time is equal to set time the device is swiching ON with timeout.
+5.	Turn ON the GPIO at this hour:minute with timeOut hour:minute. If device startup in this interval, will wait 100 sec before swiching ON the output with recalculated timeOut.
 
--	PowerOnTime
-	- Turn ON the GPIO at this hour:minute with timeOut hour:minute. If device startup in this interval, will wait 100 sec before swiching ON the output with recalculated timeOut.
+- PowerOnTime
 	- pin 			- (GPIO0 -> GPIO16) pin output. If 255 this future is disabled.
 	- time			- Switch ON at this hour:minute.
 	- timeOut		- Timeout is hour:minute. (00:01 - 18:00)
@@ -38,7 +37,7 @@
 	```
 
 
-## Configuration info
+- #### Configuration info
   - Input
     - GPIO pin set as input
     - Checks in every 50msec and send the status ON or OFF
