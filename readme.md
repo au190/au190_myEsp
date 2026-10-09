@@ -1,80 +1,42 @@
 
 ********************
-### Wifi Md or Wifi button
-
-1.  If GPIO16 pull to HIGH (less then < 5 sec) at startup it will go in N  mode - not going in sleep mode.
-2.  In N mode if GPIO16 is HIGH it will go in AP mode - not going in sleep mode.
-3.  From N mode or AP mode after 3 min go to sleep.
-
-Blink:
-1.  100 msec    Connecting to Wifi
-2.  1 sec       AP mode
-3.  2 sec       No MQTT
-4.  3 sec       Normal mode
-
-- Button = EN pin
+# myEsp
 
 
-********************
-### Wifi 3Button
-
-1.  If GPIO16 pull to HIGH (less then < 5 sec) at startup it will go in N  mode - not going in sleep mode.
-2.  In N mode if GPIO16 is HIGH it will go in AP mode - not going in sleep mode.
-3.  From N mode or AP mode after 3 min go to sleep.
-
-Blink:
-1.  100 msec    Connecting to Wifi
-2.  1 sec       AP mode
-3.  2 sec       No MQTT
-4.  3 sec       Normal mode
-
-- GPIO12
-- GPIO13
-- GPIO14
+	1.  After the firmware upload GPIO2 (Led) set to status Led_i_0.
+	2.  After the restart all the output set to OFF.
+	3.  4x4 power cycle. Power the device on for 4 sec 4 times (at cycle 4 do not power off !!!), on the 4 power cycle go in AP mode. Interval (ON > 4, OFF < 9) sec. Power cycle 4 reseting the PowerCycle to default. 
+	4.	AP ip: http://192.168.4.1
+	5.	Upload the html page: esp_ip/upload
 
 
-********************
-### WS2812B
-
-1.  Same as myEsp just GPIO4 is the output for WS2812B - do not use this pin for other config !!!
-
-
-********************
-### myEsp
+## Blink:
+	1.  100 msec    Connecting to Wifi
+	2.  1 sec       AP mode
+	3.  2 sec       No MQTT
 
 
-1.  After the firmware upload GPIO2 (Led) set to status Led_i_0.
-2.  After the restart all the output set to OFF.
-3.  4x4 power cycle. Power the device on for 4 sec 4 times (at cycle 4 do not power off !!!), on the 4 power cycle go in AP mode. Interval (ON > 4, OFF < 9) sec. Power cycle 4 reseting the PowerCycle to default. 
-4.	AP ip: http://192.168.4.1
-5.	Upload the html page: esp_ip/upload
+## PowerOnTime Logic.
+	1.	Set up the wifi.
+	2.	Before using this logic, must start with internet to save the time. Device is getting the time from NTP server.
+	3.	Restarting the device without the internet, the device is using its own clock.
+	4.	After 1 minute the device is checking the time and swiching the output (ON or OFF) with timeout.
+	5.	If the time is equal to set time the device is swiching ON with timeout.
 
-### Blink:
-1.  100 msec    Connecting to Wifi
-2.  1 sec       AP mode
-3.  2 sec       No MQTT
-
-
-### PowerOnTime Logic.
-1.	Set up the wifi.
-2.	Before using this logic, must start with internet to save the time. Device is getting the time from NTP server.
-3.	Restarting the device without the internet, the device is using its own clock.
-4.	After 1 minute the device is checking the time and swiching the output (ON or OFF) with timeout.
-5.	If the time is equal to set time the device is swiching ON with timeout.
-
-#
-PowerOnTime - pin 			- (GPIO0 -> GPIO16) pin output. If 255 this future is disabled.
-						- time			- Switch ON at this hour:minute.
-						- timeOut		- Timeout is hour:minute. (00:01 - 18:00)
+	-	PowerOnTime 
+		- pin 			- (GPIO0 -> GPIO16) pin output. If 255 this future is disabled.
+		- time			- Switch ON at this hour:minute.
+		- timeOut		- Timeout is hour:minute. (00:01 - 18:00)
 						
-Turn ON the GPIO at this hour:minute with timeOut hour:minute. If device startup in this interval, will wait 100 sec before turing on the output with recalculated timeOut.
-```
-cmnd/ws/PowerOnTime
-cmnd/ws/PowerOnTime {"pin":4,"time":"10:00","timeOut":"7:00"}
-```
+	- Turn ON the GPIO at this hour:minute with timeOut hour:minute. If device startup in this interval, will wait 100 sec before turing on the output with recalculated timeOut.
+	
+	```
+	cmnd/ws/PowerOnTime
+	cmnd/ws/PowerOnTime {"pin":4,"time":"10:00","timeOut":"7:00"}
+	```
 
 
-#### Configuration info
+## Configuration info
   - Input
     - GPIO pin set as input
     - Checks in every 50msec and send the status ON or OFF
@@ -101,6 +63,46 @@ cmnd/ws/PowerOnTime {"pin":4,"time":"10:00","timeOut":"7:00"}
     - GPIO pulled to LOW the device go in AP mode. Ip: 192.168.4.1
 
     
+
+********************
+# Wifi Md or Wifi button
+
+1.  If GPIO16 pull to HIGH (less then < 5 sec) at startup it will go in N  mode - not going in sleep mode.
+2.  In N mode if GPIO16 is HIGH it will go in AP mode - not going in sleep mode.
+3.  From N mode or AP mode after 3 min go to sleep.
+
+##Blink:
+1.  100 msec    Connecting to Wifi
+2.  1 sec       AP mode
+3.  2 sec       No MQTT
+4.  3 sec       Normal mode
+
+- Button = EN pin
+
+
+********************
+# Wifi 3Button
+
+1.  If GPIO16 pull to HIGH (less then < 5 sec) at startup it will go in N  mode - not going in sleep mode.
+2.  In N mode if GPIO16 is HIGH it will go in AP mode - not going in sleep mode.
+3.  From N mode or AP mode after 3 min go to sleep.
+
+Blink:
+1.  100 msec    Connecting to Wifi
+2.  1 sec       AP mode
+3.  2 sec       No MQTT
+4.  3 sec       Normal mode
+
+- GPIO12
+- GPIO13
+- GPIO14
+
+
+********************
+# WS2812B
+
+1.  Same as myEsp just GPIO4 is the output for WS2812B - do not use this pin for other config !!!
+
 
 
 #### Module functions
