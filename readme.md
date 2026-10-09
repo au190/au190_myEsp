@@ -10,33 +10,11 @@
 4.	AP ip: http://192.168.4.1
 5.	Upload the html page: esp_ip/upload
 
+  - Blink
+    -	Connecting to Wifi: 100 msec    
+    -	AP mode: 1 sec       
+    -	No MQTT: 2 sec       
 
-*******************************************************
-- #### Blink
-	-	100 msec    Connecting to Wifi
-	-	1 sec       AP mode
-	-	2 sec       No MQTT
-
-
-*******************************************************
-- #### PowerOnTime
-1.	Set up the wifi.
-2.	Before using this logic, must start with internet to save the time. Device is syncing the time from NTP server.
-3.	Restarting the device without the internet, the device is starting with saved clock.
-4.	After 100 sec device is checking the time and swiching the output ON with timeout.
-5.	Turn ON the GPIO at this hour:minute with timeOut hour:minute. If device startup in this interval, will wait 100 sec before swiching ON the output with recalculated timeOut.
-
-- PowerOnTime
-	- pin 			- (GPIO0 -> GPIO16) pin output. If 255 this future is disabled.
-	- time			- Switch ON at this hour:minute.
-	- timeOut		- Timeout is hour:minute. (00:01 - 18:00)
-
-	```
-	cmnd/ws/PowerOnTime
-	```
-	```
-	cmnd/ws/PowerOnTime {"pin":4,"time":"10:00","timeOut":"7:00"}
-	```
 
 
 *******************************************************
@@ -192,6 +170,23 @@
   cmnd/ws/pms5003_speed 30
   ```
 
+  - PowerOnTime
+    - Set up the wifi.
+    - Before using this logic, must start with internet to save the time. Device is syncing the time from NTP server.
+    - Restarting the device without the internet, the device is starting with saved clock.
+    - After 100 sec device is checking the time and swiching the output ON with timeout.
+    - Turn ON the GPIO at this hour:minute with timeOut hour:minute. If device startup in this interval, will wait 100 sec before swiching ON the output with recalculated timeOut.
+
+	- pin 			- (GPIO0 -> GPIO16) pin output. If 255 this future is disabled.
+	- time			- Switch ON at this hour:minute.
+	- timeOut		- Timeout is hour:minute. (00:01 - 18:00)
+
+	```
+	cmnd/ws/PowerOnTime
+	```
+	```
+	cmnd/ws/PowerOnTime {"pin":4,"time":"10:00","timeOut":"7:00"}
+	```
 
   - GmtOffset
     - GmtOffset - Set the local timezoe and DT.
