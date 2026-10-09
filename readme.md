@@ -294,8 +294,47 @@
   ```
 
 
+
 *******************************************************
-  - #### Just for APP_ALARM
+  ### Wifi Md or Wifi button
+*******************************************************
+
+1.  If GPIO16 pull to HIGH (less then < 5 sec) at startup it will go in N  mode - not going in sleep mode.
+2.  In N mode if GPIO16 is HIGH it will go in AP mode - not going in sleep mode.
+3.  From N mode or AP mode after 3 min go to sleep.
+
+Blink:
+1.  100 msec    Connecting to Wifi
+2.  1 sec       AP mode
+3.  2 sec       No MQTT
+4.  3 sec       Normal mode
+
+- Button = EN pin
+
+
+
+*******************************************************
+  ### Wifi 3Button
+*******************************************************
+
+1.  If GPIO16 pull to HIGH (less then < 5 sec) at startup it will go in N  mode - not going in sleep mode.
+2.  In N mode if GPIO16 is HIGH it will go in AP mode - not going in sleep mode.
+3.  From N mode or AP mode after 3 min go to sleep.
+
+Blink:
+1.  100 msec    Connecting to Wifi
+2.  1 sec       AP mode
+3.  2 sec       No MQTT
+4.  3 sec       Normal mode
+
+- GPIO12
+- GPIO13
+- GPIO14
+
+
+
+*******************************************************
+  #### Just for APP_ALARM
 *******************************************************
 
   - If Command is arm,sleep,disarm  subcomand is partition
@@ -332,6 +371,8 @@
   #### Just for APP_WS2812B
 *******************************************************
 
+  - 1. Same as myEsp just GPIO4 is the output for WS2812B - do not use this pin for other config !!!
+
   - Set Color
    - Input is: RBG color
    - response --> {"topic":"stat/ws/RESULT","color":"ff0000","bri":100}
@@ -367,8 +408,9 @@
   ```
 
 
+
 *******************************************************
-  - Just for USE_AHT2x
+#### Just for USE_AHT2x
 *******************************************************
 
   - When we are using the sensor USE_AHT2x. We need to set the CPU = 100. When we write to sensor, we have to red out he message in 100 ms.
@@ -377,7 +419,7 @@
 
 
 *******************************************************
-  - Just for USE_RC_SWITCH
+#### Just for USE_RC_SWITCH
 *******************************************************
 
   - When we are using RF 433MHz sensor USE_RC_SWITCH. 
@@ -422,8 +464,9 @@
   ```
 
 
+
 *******************************************************
-  - Just for ARDUINO
+#### Just for ARDUINO
 *******************************************************
 
   - Arduino OTA
@@ -488,7 +531,7 @@
 
 
 *******************************************************
-  - Upload the the firmware in different way
+#### Upload the the firmware in different way
 *******************************************************
   - Esp upload:
   
