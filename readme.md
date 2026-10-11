@@ -14,6 +14,10 @@
     -	AP mode: 1 sec       
     -	No MQTT: 2 sec       
 
+  - Info
+    - Mutisensor consuption at 5V. (String)
+      - IDLE 30 - 40 mA
+      - WEB  75 - 78 mA
 
 
 *******************************************************
@@ -540,22 +544,35 @@ Blink:
 *******************************************************
 #### Upload the firmware in different way
 *******************************************************
-  - Esp upload:
-  
-  - Linux
-    - python3 /home/ha/ota/espota_manual.py -i 192.168.1.5 -f /home/ha/ota/myEsp_v30.bin
+Esp upload:
 
-  - Check the Arduino IDE logs where is the path for the upload.py.
+Linux:
+python3 /home/ha/ota/espota_manual.py -i 192.168.1.5 -f /home/ha/ota/myEsp_v30.bin
 
-    - C:\Users\admin\Documents\ArduinoData\packages\esp8266\tools\python3\3.7.2-post1/python3 C:\Users\admin\Documents\ArduinoData\packages\esp8266\hardware\esp8266\2.7.4/tools/upload.py --chip esp8266 --port COM4 --baud 115200 --before default_reset --after hard_reset write_flash 0x0 d:\uC\myEsp\myEsp\myEsp.ino.generic.bin
 
-    - C:\Users\admin\Documents\ArduinoData\packages\esp8266\tools\python3\3.7.2-post1/python3 C:\Users\admin\Documents\ArduinoData\packages\esp8266\hardware\esp8266\2.7.4/tools/upload.py --chip esp8266 --port COM4 --baud 115200 erase_flash --before default_reset --after hard_reset write_flash 0x0 d:\uC\myEsp\myEsp\myEsp.ino.generic.bin
+Windows:
+Check the Arduino IDE logs where is the path for the upload.py.
 
-    - python.exe d:\G_Drive\MySoft\IHome\Ha\ota\espota_manual.py -i 192.168.2.5 -f d:\Github\au190_myEsp\myEsp_v29.bin
+python "d:\ota\espota_manual.py" -i 192.168.100.100 -f "d:\ota\myEsp_v31_6.bin"
+python "d:\ota\espota_manual.py" -i 192.168.4.1 -f "d:\ota\myEsp_v31_6.bin"
 
-Arduino upload:
+c:\Users\au190\AppData\Local\Arduino15\packages\esp8266\tools\python3\3.7.2-post1\python.exe d:\G_Drive\MySoft\Github\au190_myEsp\ESP8266_ota\espota_manual.py -i 192.168.4.1 -f d:\G_Drive\MySoft\Github\au190_myEsp\myEsp_v31_1.bin
+C:\Users\admin\Documents\ArduinoData\packages\esp8266\tools\python3\3.7.2-post1/python3 C:\Users\admin\Documents\ArduinoData\packages\esp8266\hardware\esp8266\2.7.4/tools/upload.py --chip esp8266 --port COM4 --baud 115200 --before default_reset --after hard_reset write_flash 0x0 d:\uC\myEsp\myEsp\myEsp.ino.generic.bin
+C:\Users\admin\Documents\ArduinoData\packages\esp8266\tools\python3\3.7.2-post1/python3 C:\Users\admin\Documents\ArduinoData\packages\esp8266\hardware\esp8266\2.7.4/tools/upload.py --chip esp8266 --port COM4 --baud 115200 erase_flash --before default_reset --after hard_reset write_flash 0x0 d:\uC\myEsp\myEsp\myEsp.ino.generic.bin
 
+
+Arduino upload trough ESP8266:
 "c:\Program Files\Python37\python.exe" d:\G_Drive\MySoft\IHome\Ha\ota\ard_ota\ard_ota.py -i 192.168.1.5 -f d:\GDrive\MySoft\IHome\Ha\ota\ard_ota\a_irrig.ino.eightanaloginputs_v3.hex
 "c:\Program Files\Python37\python.exe" d:\G_Drive\MySoft\IHome\Ha\ota\ard_ota\ard_ota.py -i 192.168.1.5 -f d:\uC\myEsp\a1_lawnmower\a1_lawnmower.ino.eightanaloginputs.hex
 
 
+Debug:
+Exeption address decod:
+Save the jar in IDE scketch dir: d:\G_Drive\uC\myEsp\myEsp\
+https://github.com/me-no-dev/EspExceptionDecoder
+
+
+
+Test the port with powershell:
+Test-NetConnection 192.168.100.100 -Port 80
+curl.exe -v --max-time 10 http://192.168.100.100:80
