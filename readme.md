@@ -16,8 +16,8 @@
     -	No MQTT: 2 sec       
 
   - Info
-    - Mutisensor consuption at 5V. (String)
-      - IDLE 30 - 40 mA
+    - Mutisensor consuption at 5V.
+      - IDLE 22 - 40 mA
       - WEB  75 - 78 mA
 
 
