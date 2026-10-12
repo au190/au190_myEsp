@@ -186,6 +186,8 @@
     - Restarting the device without the internet, the device is starting with saved clock.
     - After 100 sec device is checking the time and swiching the output ON with timeout.
     - Turn ON the GPIO at this hour:minute with timeOut hour:minute. If device startup in this interval, will wait 100 sec before swiching ON the output with recalculated timeOut.
+    - After ESP startap will try to connect to Wifi with 3 min timeout (afert 3 min will disable it).
+    - After ESP startap will try to connect to MQTT server with 50 sec timeout (afert 50 sec will disable it).
 
 	- pin 			- (GPIO0 -> GPIO16) pin output. If 255 this future is disabled.
 	- time			- Switch ON at this hour:minute.
@@ -556,7 +558,7 @@ Windows:
 - Check the Arduino IDE logs where is the path for the upload.py.
 
 - python "d:\ota\espota_manual.py" -i 192.168.100.100 -f "d:\ota\myEsp_v31_6.bin"
-- python "d:\ota\espota_manual.py" -i 192.168.4.1 -f "d:\ota\myEsp_v31_6.bin"
+- python "d:\ota\espota_manual.py" -i 192.168.4.1 -f "d:\ota\myEsp_v31_3.bin"
 
 - c:\Users\au190\AppData\Local\Arduino15\packages\esp8266\tools\python3\3.7.2-post1\python.exe d:\G_Drive\MySoft\Github\au190_myEsp\ESP8266_ota\espota_manual.py -i 192.168.4.1 -f d:\G_Drive\MySoft\Github\au190_myEsp\myEsp_v31_1.bin
 - C:\Users\admin\Documents\ArduinoData\packages\esp8266\tools\python3\3.7.2-post1/python3 C:\Users\admin\Documents\ArduinoData\packages\esp8266\hardware\esp8266\2.7.4/tools/upload.py --chip esp8266 --port COM4 --baud 115200 --before default_reset --after hard_reset write_flash 0x0 d:\uC\myEsp\myEsp\myEsp.ino.generic.bin
