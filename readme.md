@@ -8,6 +8,7 @@
 		Interval (ON > 4, OFF < 9) sec. Power cycle 4 reseting the PowerCycle to default. 
 4.	AP ip: http://192.168.4.1
 5.	Upload the html page: esp_ip/upload
+6.  If MQTT Server is empty, not connecting to it.
 
   - Blink
     -	Connecting to Wifi: 100 msec    
@@ -40,8 +41,9 @@
     - Checks in every 50msec and send the status ON or OFF
     - If the input is LOW send the md message in every 10sec untl the input is LOW.
   - Led_x
-    - Status info Led for Wifi, AP mode, MQTT connections.
-    - If GPIOx set as an output then show the output status. Ex: GPIO4 = Output, GPIO2 = Ledx_i_4
+    - Status of GPIO on the default Led. Info Led for Wifi, AP mode, MQTT connections.
+    - If GPIOx set as an output, and I want to see the status of the output on the default Led(GPIO2). Ex: GPIO4 = Output, Set on GPIO2 = Led_i_4
+    - If I set the GPIO2 = Led_i_2 The defult implemented led will be the status for Wifi, AP mode, MQTT connections.
   - AP Button
     - GPIO pulled to HIGH the device go in AP mode. Ip: 192.168.4.1
   - AP Button_i
