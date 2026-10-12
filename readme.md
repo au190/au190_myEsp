@@ -569,10 +569,10 @@ Arduino upload trough ESP8266:
 
 
 Debug:
--Exeption address decod:
--Save the jar in IDE scketch dir: d:\G_Drive\uC\myEsp\myEsp\
--https://github.com/me-no-dev/EspExceptionDecoder
-
+- Exeption address decoder:
+  - Save the jar in IDE scketch dir: d:\G_Drive\uC\myEsp\myEsp\
+  - https://github.com/me-no-dev/EspExceptionDecoder
+  
 
 
 Test the port with powershell:
