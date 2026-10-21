@@ -214,8 +214,8 @@
 	
 	- Request Data form HTTPS server. Switch based on data.
 		- Request: https://xyz.com/local/esp/p.html
-    - Response: 1792592402;1
-    - Turn on the switch based on the data. Runs every 10min.
+		- Response: 1792592402;1
+		- Turn on the switch based on the data. Runs every 10min.
 		- Get Set the output pin.
 		- default: 255 (disabled this logic)
 	```
