@@ -211,6 +211,19 @@
   ```
   cmnd/ws/GmtOffset 1
   ```
+	
+	- Request Data form HTTPS server. Switch based on data.
+		- Request: https://xyz.com/local/esp/p.html
+    - Response: 1792592402;1
+    - Turn on the switch based on the data. Runs every 10min.
+		- Get Set the output pin.
+		- default: 255 (disabled this logic)
+	```
+	cmnd/ws/httpsPowerOnPin
+	```
+	```
+	cmnd/ws/httpsPowerOnPin 4
+	```
 
 
 *******************************************************
@@ -304,6 +317,57 @@
   cmnd/ws/PWMIR1 50
   ```
 
+
+
+
+*******************************************************
+#### USE_RC_SWITCH
+*******************************************************
+
+  - When using RF 433MHz sensor USE_RC_SWITCH.
+    - Remote Control AK-K21080 12 Button Black Edge EV1527 Encoding Chip, 433mhz US $3.04 (Princeton, PT-2240)
+    - 315/433Mhz Superheterodyne Wireless Receiver Module RXB4 RXB8 RXB9 RXB35 RXB12 RXB14 RXB22 RXB6 For AVR (my decoder)
+    - ESP decoder program supported chipsets:
+      - SC5262 / SC5272
+      - HX2262 / HX2272
+      - PT2262 / PT2272
+      - EV1527 / RT1527 / FP1527 / HS1527 
+      - Intertechno outlets
+      - HT6P20X
+      
+  
+  - Enable disable protocols
+  I have 37 protocol for RF. I can enable or disable one by one using rf_protocol_mask. 
+  Protocol max is hold on 8 byte, 64 bit in memmory. Low bit = protocol 1. Ex: 1057 is the protocol: 1, 6, 11
+  Max number of long long 64 bit = 18446744073709551615. I can set 64 different type of protcol. 
+  
+  ```
+  cmnd/ws/rf_protocol_mask
+  ```
+  ```
+  cmnd/ws/rf_protocol_mask 18446744073709551615
+  ```
+
+  - Scann RF signals
+    - Start to record the timeings(buffer_size) on the interrupt input pin.
+    - Will try to find out the protocol start.
+    - buffer_size - [0 1024] 
+    - tolerance   - [0 100] in %
+    - filter      - filter out signals shorter that 350 us. [-32768 32767]
+
+  ```
+  cmnd/ws/rf_scann {"buffer_size":512,"tolerance":50,"filter":350}
+  ```
+  
+  - Send Raw RF signal Under develeopment
+  ```
+  cmnd/ws/rf_sendraw {"data":"21,-56,34,-253,519,-265,165,-202,151,-256"}
+  ```
+
+  - Send RF signal
+  ```
+  cmnd/ws/rf_send {"data":14448796,"bits":24,"protocol":1,"pulse":350}
+  ```
 
 
 *******************************************************
@@ -429,58 +493,6 @@ Blink:
 
 
 *******************************************************
-#### Just for USE_RC_SWITCH
-*******************************************************
-
-  - When we are using RF 433MHz sensor USE_RC_SWITCH.
-    - Remote Control AK-K21080 12 Button Black Edge EV1527 Encoding Chip, 433mhz US $3.04 (Princeton, PT-2240)
-    - 315/433Mhz Superheterodyne Wireless Receiver Module RXB4 RXB8 RXB9 RXB35 RXB12 RXB14 RXB22 RXB6 For AVR (my decoder)
-    - Supported chipsets:
-      - SC5262 / SC5272
-      - HX2262 / HX2272
-      - PT2262 / PT2272
-      - EV1527 / RT1527 / FP1527 / HS1527 
-      - Intertechno outlets
-      - HT6P20X
-      
-      
-  
-  - Enable disable protocols
-  I have 37 protocol for RF. I can enable or disable one by one using rf_protocol_mask. 
-  Protocol max is hold on 8 byte, 64 bit in memmory. Low bit = protocol 1. Ex: 1057 is the protocol: 1, 6, 11
-  Max number of long long 64 bit = 18446744073709551615. I can set 64 different type of protcol. 
-  
-  ```
-  cmnd/ws/rf_protocol_mask
-  ```
-  ```
-  cmnd/ws/rf_protocol_mask 18446744073709551615
-  ```
-
-  - Scann RF signals
-    - Start to record the timeings(buffer_size) on the interrupt input pin.
-    - Will try to find out the protocol start.
-    - buffer_size - [0 1024] 
-    - tolerance   - [0 100] in %
-    - filter      - filter out signals shorter that 350 us. [-32768 32767]
-
-  ```
-  cmnd/ws/rf_scann {"buffer_size":512,"tolerance":50,"filter":350}
-  ```
-  
-  - Send Raw RF signal Under develeopment
-  ```
-  cmnd/ws/rf_sendraw {"data":"21,-56,34,-253,519,-265,165,-202,151,-256"}
-  ```
-
-  - Send RF signal
-  ```
-  cmnd/ws/rf_send {"data":14448796,"bits":24,"protocol":1,"pulse":350}
-  ```
-
-
-
-*******************************************************
 #### Just for ARDUINO
 *******************************************************
 
@@ -574,6 +586,7 @@ Debug:
 - Exeption address decoder:
   - Save the jar in IDE scketch dir: d:\G_Drive\uC\myEsp\myEsp\
   - https://github.com/me-no-dev/EspExceptionDecoder
+	- c:\Users\au190\AppData\Local\Temp\arduino_build_208807\myEsp.ino.elf 
   
 
 
