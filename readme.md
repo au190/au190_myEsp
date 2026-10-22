@@ -8,7 +8,7 @@
 		Interval (ON > 4, OFF < 9) sec. Power cycle 4 reseting the PowerCycle to default. 
 4.	AP ip: http://192.168.4.1
 5.	Upload the html page: esp_ip/upload
-6.  If MQTT Server is empty, not connecting to it.
+6.  If MQTT Server is empty "", not using it, not connecting to it.
 
   - Blink
     -	Connecting to Wifi: 100 msec    
@@ -187,7 +187,7 @@
     - After 100 sec device is checking the time and swiching the output ON with timeout.
     - Turn ON the GPIO at this hour:minute with timeOut hour:minute. If device startup in this interval, will wait 100 sec before swiching ON the output with recalculated timeOut.
     - After ESP startap will try to connect to Wifi with 3 min timeout (afert 3 min will disable it).
-    - After ESP startap will try to connect to MQTT server with 50 sec timeout (afert 50 sec will disable it).
+
 
 	- pin 			- (GPIO0 -> GPIO16) pin output. If 255 this future is disabled.
 	- time			- Switch ON at this hour:minute.
